@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<!-- skill:libraries -->
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js" integrity="sha384-wHFvAtjmgnkA2PJcMsDaCgdipf7X7YV44X/igbLHpvGiq6T5/PvFKl93grpvtbQT" crossorigin="anonymous"></script>
+<script>document.addEventListener("DOMContentLoaded",()=>lucide.createIcons())</script>
+<!-- /skill:libraries -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KirimStellar — Masuk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lime: oklch(87% 0.185 128);
+    --lime-press: oklch(81% 0.18 128);
+    --forest: oklch(27% 0.055 155);
+    --forest-deep: oklch(21% 0.05 155);
+    --forest-soft: oklch(40% 0.04 155);
+    --cream: oklch(97.5% 0.018 95);
+    --surface: oklch(99% 0.008 95);
+    --ink: oklch(24% 0.03 155);
+    --muted: oklch(52% 0.02 155);
+    --muted-on-dark: oklch(80% 0.025 128);
+    --line: oklch(90% 0.012 130);
+    --line-strong: oklch(84% 0.016 130);
+    --good: oklch(62% 0.14 155);
+    --danger: oklch(58% 0.15 25);
+
+    --space-xs: 4px; --space-sm: 8px; --space-md: 12px; --space-lg: 16px;
+    --space-xl: 24px; --space-2xl: 32px; --space-3xl: 48px; --space-4xl: 72px;
+
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --r-sm: 10px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  h1, h2, h3 { text-wrap: balance; letter-spacing: -0.03em; line-height: 1.1; }
+  a { color: inherit; }
+
+  .layout { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+
+  /* ---------- LEFT: brand panel ---------- */
+  .panel {
+    background: var(--forest);
+    color: oklch(96% 0.02 128);
+    padding: var(--space-4xl) var(--space-3xl);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .panel::after {
+    content: "";
+    position: absolute;
+    width: 460px; height: 460px;
+    background: radial-gradient(circle, oklch(87% 0.185 128 / 0.14), transparent 70%);
+    bottom: -160px; left: -120px;
+    border-radius: 50%;
+  }
+  .brand {
+    display: flex; align-items: center; gap: var(--space-sm);
+    font-weight: 800; font-size: 1.125rem; letter-spacing: -0.03em;
+    position: relative; z-index: 1;
+  }
+  .brand .mark {
+    width: 32px; height: 32px; background: var(--lime); border-radius: 9px;
+    display: grid; place-items: center; color: var(--forest);
+  }
+  .panel-body { margin-top: auto; position: relative; z-index: 1; }
+  .panel-body h2 {
+    font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 800;
+    color: oklch(97% 0.02 128); max-width: 16ch;
+  }
+  .panel-body h2 .hl { color: var(--lime); }
+  .panel-quote {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-2xl);
+    border-top: 1px solid oklch(40% 0.04 155);
+    max-width: 40ch;
+  }
+  .panel-quote p { color: var(--muted-on-dark); font-weight: 500; font-size: 1.0625rem; }
+  .panel-quote .who { margin-top: var(--space-md); display: flex; align-items: center; gap: var(--space-md); }
+  .panel-quote .who .a { width: 38px; height: 38px; border-radius: 50%; background: var(--lime); color: var(--forest); display: grid; place-items: center; font-weight: 800; font-size: 0.8125rem; }
+  .panel-quote .who .n { font-weight: 700; font-size: 0.875rem; color: oklch(94% 0.02 128); }
+  .panel-quote .who .r { font-size: 0.8125rem; color: var(--muted-on-dark); font-weight: 500; }
+
+  .panel-stats { display: flex; gap: var(--space-2xl); margin-top: var(--space-3xl); position: relative; z-index: 1; }
+  .panel-stats .s .n { font-size: 1.5rem; font-weight: 800; color: var(--lime); font-variant-numeric: tabular-nums; letter-spacing: -0.03em; }
+  .panel-stats .s .l { font-size: 0.8125rem; color: var(--muted-on-dark); font-weight: 600; }
+
+  /* ---------- RIGHT: form ---------- */
+  .form-side { display: flex; align-items: center; justify-content: center; padding: var(--space-4xl) var(--space-3xl); }
+  .form-card { width: 100%; max-width: 400px; }
+  .form-card .top-link { font-size: 0.875rem; font-weight: 600; color: var(--muted); text-align: right; margin-bottom: var(--space-3xl); }
+  .form-card .top-link a { color: var(--forest); font-weight: 700; text-decoration: none; }
+  .form-card .top-link a:hover { text-decoration: underline; }
+
+  .form-card h1 { font-size: 2rem; font-weight: 800; }
+  .form-card .sub { color: var(--muted); font-weight: 500; margin-top: var(--space-sm); font-size: 0.9375rem; }
+
+  form { margin-top: var(--space-2xl); display: flex; flex-direction: column; gap: var(--space-lg); }
+  .field { display: flex; flex-direction: column; gap: var(--space-sm); }
+  .field label { font-size: 0.8125rem; font-weight: 700; color: var(--forest-soft); }
+  .input-wrap { position: relative; display: flex; align-items: center; }
+  .input-wrap > i { position: absolute; left: var(--space-md); color: var(--muted); pointer-events: none; }
+  .input-wrap input {
+    width: 100%;
+    font-family: inherit; font-size: 0.9375rem; font-weight: 500;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-md);
+    padding: var(--space-md) var(--space-md) var(--space-md) 42px;
+    outline: none;
+    transition: border-color 140ms var(--ease-out-quint), box-shadow 140ms var(--ease-out-quint);
+  }
+  .input-wrap input::placeholder { color: oklch(70% 0.015 155); font-weight: 500; }
+  .input-wrap input:focus-visible {
+    border-color: var(--forest);
+    box-shadow: 0 0 0 3px oklch(87% 0.185 128 / 0.45);
+  }
+  .input-wrap .toggle {
+    position: absolute; right: var(--space-sm);
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); padding: var(--space-sm);
+    display: grid; place-items: center;
+    border-radius: 8px;
+  }
+  .input-wrap .toggle:hover { color: var(--forest); background: var(--cream); }
+
+  .row-between { display: flex; align-items: center; justify-content: space-between; }
+  .check { display: flex; align-items: center; gap: var(--space-sm); font-size: 0.875rem; font-weight: 600; color: var(--forest-soft); cursor: pointer; user-select: none; }
+  .check input { width: 17px; height: 17px; accent-color: var(--forest); cursor: pointer; }
+  .forgot { font-size: 0.875rem; font-weight: 700; color: var(--forest); text-decoration: none; }
+  .forgot:hover { text-decoration: underline; }
+
+  .btn-primary {
+    width: 100%; font-family: inherit; font-weight: 800; font-size: 1rem;
+    background: var(--lime); color: var(--forest);
+    border: none; border-radius: 999px; padding: var(--space-md) var(--space-xl);
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: var(--space-sm);
+    transition: transform 120ms var(--ease-out-quint), background 120ms var(--ease-out-quint);
+    margin-top: var(--space-xs);
+  }
+  .btn-primary:hover { background: oklch(89% 0.19 128); }
+  .btn-primary:active { transform: scale(0.98); background: var(--lime-press); }
+  .btn-primary:focus-visible { outline: 3px solid var(--forest); outline-offset: 3px; }
+
+  .divider { display: flex; align-items: center; gap: var(--space-md); color: var(--muted); font-size: 0.8125rem; font-weight: 600; margin: var(--space-sm) 0; }
+  .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  .wallet-btn {
+    width: 100%; font-family: inherit; font-weight: 700; font-size: 0.9375rem;
+    background: var(--surface); color: var(--ink);
+    border: 1px solid var(--line-strong); border-radius: var(--r-md);
+    padding: var(--space-md); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: var(--space-md);
+    transition: border-color 140ms var(--ease-out-quint), background 140ms var(--ease-out-quint);
+  }
+  .wallet-btn:hover { border-color: var(--forest); background: oklch(97% 0.014 128); }
+  .wallet-btn .wico { width: 24px; height: 24px; border-radius: 7px; background: oklch(62% 0.16 250); display: grid; place-items: center; color: white; font-weight: 800; font-size: 0.75rem; flex-shrink: 0; }
+
+  .foot-note { text-align: center; font-size: 0.8125rem; color: var(--muted); font-weight: 500; margin-top: var(--space-xl); }
+  .foot-note a { color: var(--forest); font-weight: 700; text-decoration: none; }
+  .foot-note a:hover { text-decoration: underline; }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .panel { display: none; }
+    .form-side { padding: var(--space-2xl) var(--space-xl); min-height: 100vh; }
+    .form-card .top-link { text-align: center; }
+  }
+</style>
+</head>
+<body>
+  <div class="layout">
+    <!-- Brand panel -->
+    <aside class="panel">
+      <div class="brand">
+        <span class="mark"><i data-lucide="send-horizontal" width="17" height="17"></i></span>
+        KirimStellar
+      </div>
+      <div class="panel-body">
+        <h2>Uang untuk keluarga, <span class="hl">tiba dalam detik.</span></h2>
+        <div class="panel-quote">
+          <p>"Dulu tiap kirim ke ibu, kena potong hampir 200 ribu dan nunggu dua hari. Sekarang sampai sebelum aku sempat telepon."</p>
+          <div class="who">
+            <span class="a">SW</span>
+            <div>
+              <div class="n">Siti W.</div>
+              <div class="r">Pekerja rumah tangga, Hong Kong</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-stats">
+          <div class="s"><div class="n">~5 dtk</div><div class="l">rata-rata tiba</div></div>
+          <div class="s"><div class="n">&lt; 0,1%</div><div class="l">biaya kirim</div></div>
+          <div class="s"><div class="n">1:1</div><div class="l">IDRT ke Rupiah</div></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Form -->
+    <main class="form-side">
+      <div class="form-card">
+        <p class="top-link">Belum punya akun? <a href="#">Daftar gratis</a></p>
+        <h1>Selamat datang kembali</h1>
+        <p class="sub">Masuk untuk kirim uang ke rumah.</p>
+
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <div class="input-wrap">
+              <i data-lucide="mail" width="17" height="17"></i>
+              <input type="email" id="email" placeholder="kamu@email.com" autocomplete="email" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password">Kata sandi</label>
+            <div class="input-wrap">
+              <i data-lucide="lock" width="17" height="17"></i>
+              <input type="password" id="password" placeholder="Masukkan kata sandi" autocomplete="current-password" required>
+              <button type="button" class="toggle" id="togglePw" aria-label="Tampilkan kata sandi">
+                <i data-lucide="eye" width="17" height="17"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="row-between">
+            <label class="check"><input type="checkbox"> Ingat saya</label>
+            <a href="#" class="forgot">Lupa sandi?</a>
+          </div>
+
+          <button type="submit" class="btn-primary">Masuk <i data-lucide="arrow-right" width="17" height="17"></i></button>
+        </form>
+
+        <div class="divider">atau</div>
+
+        <button type="button" class="wallet-btn">
+          <span class="wico">F</span>
+          Lanjut dengan Freighter Wallet
+        </button>
+
+        <p class="foot-note">Dengan masuk, kamu setuju dengan <a href="#">Ketentuan</a> &amp; <a href="#">Privasi</a>.</p>
+      </div>
+    </main>
+  </div>
+
+<script>
+  const pw = document.getElementById('password');
+  const toggle = document.getElementById('togglePw');
+  toggle.addEventListener('click', () => {
+    const show = pw.type === 'password';
+    pw.type = show ? 'text' : 'password';
+    toggle.innerHTML = show
+      ? '<i data-lucide="eye-off" width="17" height="17"></i>'
+      : '<i data-lucide="eye" width="17" height="17"></i>';
+    if (window.lucide) lucide.createIcons();
+  });
+  document.getElementById('loginForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-primary');
+    btn.style.transform = 'scale(0.98)';
+    setTimeout(() => btn.style.transform = '', 140);
+  });
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>

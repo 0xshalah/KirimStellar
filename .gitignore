@@ -1,0 +1,23 @@
+# Rust / Cargo
+contracts/**/target/
+**/*.rs.bk
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Env
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Test snapshots may contain env-specific data
+# but we committed them - uncomment if needed:
+# contracts/**/test_snapshots/
