@@ -22,9 +22,9 @@ export default function Send() {
 
   const numAmount = parseFloat(String(amount).replace(/,/g, ""));
   let error = null;
-  if (amount !== "" && (!Number.isFinite(numAmount) || numAmount <= 0)) error = "Masukkan jumlah yang valid";
+  if (amount !== "" && (!Number.isFinite(numAmount) || numAmount <= 0)) error = "Incomingkan jumlah yang valid";
   else if (Number.isFinite(numAmount) && numAmount > maxSendable) {
-    error = `Saldo tidak cukup. Maksimal ${maxSendable.toFixed(2)} ${code}`;
+    error = `Insufficient balance. Max ${maxSendable.toFixed(2)} ${code}`;
   }
 
   const canNext = recipient && Number.isFinite(numAmount) && numAmount > 0 && !error;
@@ -42,12 +42,12 @@ export default function Send() {
 
   return (
     <div className="app-body">
-      <AppBar title="Kirim uang" showBack />
+      <AppBar title="Send money" showBack />
       <div className="pad">
         <div className="card converter">
           <div className="leg">
             <div>
-              <div className="leg-label">Kamu kirim</div>
+              <div className="leg-label">You send</div>
               <input
                 className="amount"
                 value={amount}
@@ -58,24 +58,24 @@ export default function Send() {
                   const n = parseFloat(String(amount).replace(/,/g, ""));
                   if (Number.isFinite(n)) setAmount(n.toFixed(2));
                 }}
-                aria-label={`Jumlah ${code}`}
+                aria-label={`Amount ${code}`}
               />
             </div>
             <span className="pill"><span className="flag usdc">{code[0]}</span> {code}</span>
           </div>
           <div className="rail">
             <div className="rail-row">
-              <span className="ico"><Zap size={12} /></span> Biaya jaringan
+              <span className="ico"><Zap size={12} /></span> Network fee
               <span className="val free">~0.00001 XLM</span>
             </div>
             <div className="rail-row">
-              <span className="ico"><Repeat size={12} /></span> Estimasi kurs
+              <span className="ico"><Repeat size={12} /></span> Estimated rate
               <span className="val">{CONFIG.idrRate.toLocaleString("id-ID")}</span>
             </div>
           </div>
           <div className="leg">
             <div>
-              <div className="leg-label">Estimasi mereka terima</div>
+              <div className="leg-label">Estimated they receive</div>
               <div className="amount"><span>{idrEstimate}</span> <span className="cur">IDR</span></div>
             </div>
             <span className="pill"><span className="flag idr" /> IDR</span>
@@ -95,14 +95,14 @@ export default function Send() {
           </div>
         ) : (
           <button className="add-rec" style={{ marginTop: "var(--space-lg)" }} onClick={() => push("recipients")}>
-            <UserPlus size={17} /> Pilih penerima
+            <UserPlus size={17} /> Choose recipient
           </button>
         )}
       </div>
 
       <div className="pad push-bottom">
         <button className="btn btn-primary" onClick={next} disabled={!canNext}>
-          Lanjut <ArrowRight size={17} />
+          Continue <ArrowRight size={17} />
         </button>
       </div>
     </div>

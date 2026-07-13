@@ -13,7 +13,7 @@ export default function Claim() {
   const amount = result?.amount || "200.00";
   const idr = formatIdr(toIdr(amount));
   const idrt = amount;
-  const senderLabel = shortKey(address || "Pengirim");
+  const senderLabel = shortKey(address || "Sender");
 
   function claim() {
     setPhase("claiming");
@@ -23,20 +23,20 @@ export default function Claim() {
   if (phase === "done") {
     return (
       <div className="app-body">
-        <AppBar title="Klaim" showBack />
+        <AppBar title="Claim" showBack />
         <div className="success-wrap">
           <div className="success-badge"><PartyPopper size={42} /></div>
-          <h2>Uang sudah masuk!</h2>
-          <div className="big-amt">Rp {idr} di dompetmu</div>
+          <h2>Money received!</h2>
+          <div className="big-amt">Rp {idr} in your wallet</div>
           <div className="receipt">
-            <div className="kv"><span className="k">Diterima</span><span className="v">{idrt} IDRT</span></div>
+            <div className="kv"><span className="k">Received</span><span className="v">{idrt} IDRT</span></div>
             <div className="kv"><span className="k">Dari</span><span className="v">{senderLabel}</span></div>
-            <div className="kv"><span className="k">Status</span><span className="v"><span className="chip done"><Check size={11} /> Selesai</span></span></div>
+            <div className="kv"><span className="k">Status</span><span className="v"><span className="chip done"><Check size={11} /> Completed</span></span></div>
           </div>
         </div>
         <div className="pad">
-          <button className="btn btn-primary"><Landmark size={16} /> Cairkan ke rekening</button>
-          <button className="btn btn-ghost" style={{ marginTop: "var(--space-md)" }} onClick={() => goTab("home")}>Kembali</button>
+          <button className="btn btn-primary"><Landmark size={16} /> Cash out to bank</button>
+          <button className="btn btn-ghost" style={{ marginTop: "var(--space-md)" }} onClick={() => goTab("home")}>Back</button>
         </div>
       </div>
     );
@@ -44,28 +44,28 @@ export default function Claim() {
 
   return (
     <div className="app-body">
-      <AppBar title="Klaim" showBack />
+      <AppBar title="Claim" showBack />
       <div className="claim-top">
         <div className="from-av">{senderLabel.slice(0, 2).toUpperCase()}</div>
-        <div className="from-n">{senderLabel} mengirim untukmu</div>
+        <div className="from-n">{senderLabel} sent for you</div>
         <div className="claim-amt">Rp {idr}</div>
         <div className="claim-cur">≈ {idrt} IDRT</div>
       </div>
       <div className="claim-body">
         <div className="claim-info">
           <ShieldCheck size={16} />
-          <span>Dana ini aman di Stellar. Klaim untuk terima langsung ke dompetmu.</span>
+          <span>These funds are safe on Stellar. Claim to receive directly in your wallet.</span>
         </div>
         <div className="card card-pad">
           <div className="kv"><span className="k">Dari</span><span className="v">{senderLabel}</span></div>
-          <div className="kv"><span className="k">Kamu terima</span><span className="v">{idrt} IDRT</span></div>
-          <div className="kv"><span className="k">Biaya klaim</span><span className="v free">Gratis</span></div>
-          <div className="kv"><span className="k">Kedaluwarsa</span><span className="v">6 hari 23 jam</span></div>
+          <div className="kv"><span className="k">You receive</span><span className="v">{idrt} IDRT</span></div>
+          <div className="kv"><span className="k">Claim fee</span><span className="v free">Free</span></div>
+          <div className="kv"><span className="k">Expires</span><span className="v">6 hari 23 jam</span></div>
         </div>
       </div>
       <div className="pad push-bottom">
         <button className="btn btn-primary" onClick={claim} disabled={phase === "claiming"}>
-          {phase === "claiming" ? <><span className="spinner" /> Mengklaim…</> : <>Klaim sekarang <HandCoins size={17} /></>}
+          {phase === "claiming" ? <><span className="spinner" /> Claiming…</> : <>Claim now <HandCoins size={17} /></>}
         </button>
       </div>
     </div>

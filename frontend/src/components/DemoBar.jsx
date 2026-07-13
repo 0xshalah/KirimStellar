@@ -8,17 +8,17 @@ const STEPS = [
   ["landing", "Landing"],
   ["login", "Login"],
   ["register", "Register"],
-  ["home", "Beranda"],
-  ["send", "Kirim"],
+  ["home", "Home"],
+  ["send", "Send"],
   ["review", "Review"],
-  ["success", "Sukses"],
-  ["track", "Status"],
-  ["claim", "Klaim"],
-  ["history", "Riwayat"],
+  ["success", "Success"],
+  ["track", "Track"],
+  ["claim", "Claim"],
+  ["history", "History"],
   ["detail", "Detail"],
-  ["recipients", "Penerima"],
-  ["account", "Akun"],
-  ["topup", "Isi saldo"],
+  ["recipients", "Recipients"],
+  ["account", "Account"],
+  ["topup", "Top up"],
 ];
 
 export default function DemoBar() {
@@ -81,7 +81,7 @@ export default function DemoBar() {
 
   if (!open) {
     return (
-      <button className="demobar-tab" onClick={() => setOpen(true)} aria-label="Buka demo bar">
+      <button className="demobar-tab" onClick={() => setOpen(true)} aria-label="Open demo bar">
         <Clapperboard size={14} /> Demo
       </button>
     );
@@ -101,7 +101,7 @@ export default function DemoBar() {
           </button>
         ))}
       </div>
-      <button className="db-close" onClick={() => setOpen(false)} aria-label="Tutup demo bar">
+      <button className="db-close" onClick={() => setOpen(false)} aria-label="Close demo bar">
         <X size={14} />
       </button>
     </div>

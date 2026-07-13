@@ -6,9 +6,9 @@ import { buildTransferXdr, submitSignedXdr, sendAssetCode } from "../lib/stellar
 import { signXdr } from "../lib/wallet.js";
 
 const STEP_LABEL = {
-  building: "Menyiapkan transaksi…",
-  signing: "Menunggu tanda tangan di Freighter…",
-  submitting: "Mengirim ke jaringan Stellar…",
+  building: "Preparing transaction…",
+  signing: "Waiting for signature in Freighter…",
+  submitting: "Sending to Stellar network…",
 };
 
 export default function Sending() {
@@ -29,7 +29,7 @@ export default function Sending() {
           source: address,
           destination: recipient.wallet,
           amount,
-          memo: "KirimStellar",
+          memo: "SendStellar",
         });
 
         setStep("signing");
@@ -58,15 +58,15 @@ export default function Sending() {
   if (error) {
     return (
       <div className="app-body">
-        <AppBar title="Kirim uang" showBack />
+        <AppBar title="Send money" showBack />
         <div className="state-wrap">
           <div className="state-ico danger"><X size={34} /></div>
-          <h3>Transaksi gagal</h3>
+          <h3>Transaction failed</h3>
           <p>{error}</p>
           <div style={{ display: "flex", gap: "var(--space-md)", marginTop: "var(--space-xl)" }}>
-            <button className="btn btn-ghost btn-auto" onClick={() => goTab("home")}>Batal</button>
+            <button className="btn btn-ghost btn-auto" onClick={() => goTab("home")}>Cancel</button>
             <button className="btn btn-primary btn-auto" onClick={back}>
-              <RotateCw size={15} /> Coba lagi
+              <RotateCw size={15} /> Try again
             </button>
           </div>
         </div>
@@ -82,8 +82,8 @@ export default function Sending() {
           <h3 style={{ fontSize: "1.25rem", fontWeight: 800 }}>{STEP_LABEL[step]}</h3>
           <p style={{ color: "var(--muted)", fontWeight: 500, marginTop: "var(--space-sm)" }}>
             {step === "signing"
-              ? "Buka popup Freighter dan setujui transaksi."
-              : "Sebentar ya, jangan tutup halaman ini."}
+              ? "Open the Freighter popup and approve the transaction."
+              : "Hang tight, don't close this page."}
           </p>
         </div>
       </div>
@@ -93,9 +93,9 @@ export default function Sending() {
 
 function humanize(e) {
   const msg = e?.message || String(e);
-  if (/user (declined|rejected)|denied|reject/i.test(msg)) return "Tanda tangan dibatalkan di Freighter.";
-  if (/network|passphrase/i.test(msg)) return "Jaringan Freighter tidak cocok. Setel ke Testnet lalu coba lagi.";
-  if (/underfunded|insufficient|tx_insufficient|op_underfunded/i.test(msg)) return "Saldo tidak cukup untuk transaksi ini.";
-  if (/op_no_destination|no_destination/i.test(msg)) return "Alamat penerima belum aktif di jaringan.";
+  if (/user (declined|rejected)|denied|reject/i.test(msg)) return "Signing was cancelled in Freighter.";
+  if (/network|passphrase/i.test(msg)) return "Freighter network mismatch. Switch to Testnet and try again.";
+  if (/underfunded|insufficient|tx_insufficient|op_underfunded/i.test(msg)) return "Insufficient balance for this transaction.";
+  if (/op_no_destination|no_destination/i.test(msg)) return "Recipient address is not active on the network.";
   return msg;
 }

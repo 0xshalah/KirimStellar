@@ -18,7 +18,7 @@ export function AppBar({ title, greet, showBack, showAvatar, showNet, name }) {
   return (
     <div className="appbar">
       {showBack && (
-        <div className="back" onClick={back} role="button" aria-label="Kembali">
+        <div className="back" onClick={back} role="button" aria-label="Back">
           <ArrowLeft size={18} />
         </div>
       )}
@@ -29,7 +29,7 @@ export function AppBar({ title, greet, showBack, showAvatar, showNet, name }) {
       {showNet && <span className="net-badge">{network?.network || "TESTNET"}</span>}
       {showAvatar && (
         <div className="avatar" onClick={() => push("account")} role="button">
-          {initials(name || "Kamu")}
+          {initials(name || "You")}
         </div>
       )}
     </div>
@@ -37,11 +37,11 @@ export function AppBar({ title, greet, showBack, showAvatar, showNet, name }) {
 }
 
 const TABS = [
-  { key: "home", label: "Beranda", icon: Home },
-  { key: "history", label: "Riwayat", icon: Clock },
+  { key: "home", label: "Home", icon: Home },
+  { key: "history", label: "History", icon: Clock },
   { key: "__fab", label: "", icon: Plus },
-  { key: "recipients", label: "Penerima", icon: Users },
-  { key: "account", label: "Akun", icon: User },
+  { key: "recipients", label: "Recipients", icon: Users },
+  { key: "account", label: "Account", icon: User },
 ];
 
 export function BottomNav() {
@@ -52,7 +52,7 @@ export function BottomNav() {
         const Icon = t.icon;
         if (t.key === "__fab") {
           return (
-            <button key="fab" className="fab" onClick={() => push("send")} aria-label="Kirim">
+            <button key="fab" className="fab" onClick={() => push("send")} aria-label="Send">
               <Plus size={22} />
             </button>
           );

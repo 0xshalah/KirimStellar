@@ -10,10 +10,10 @@ export default function Track() {
   if (!result) {
     return (
       <div className="app-body">
-        <AppBar title="Status kiriman" showBack />
+        <AppBar title="Transfer status" showBack />
         <div className="state-wrap">
-          <p>Belum ada kiriman untuk dilacak.</p>
-          <button className="btn btn-primary btn-auto" onClick={() => goTab("home")}>Ke beranda</button>
+          <p>No transfers to track yet.</p>
+          <button className="btn btn-primary btn-auto" onClick={() => goTab("home")}>Back to home</button>
         </div>
       </div>
     );
@@ -25,10 +25,10 @@ export default function Track() {
 
   return (
     <div className="app-body">
-      <AppBar title="Status kiriman" showBack />
+      <AppBar title="Transfer status" showBack />
       <div className="pad">
         <div className="track-hero">
-          <span className="chip done"><Check size={11} /> Terkonfirmasi</span>
+          <span className="chip done"><Check size={11} /> Confirmed</span>
           <div className="amt" style={{ marginTop: "var(--space-md)" }}>{amount} {assetCode}</div>
           <div className="to">ke {recipient.name} · ≈ Rp {formatIdr(toIdr(amount))}</div>
         </div>
@@ -36,12 +36,12 @@ export default function Track() {
         <div className="timeline">
           <div className="tl-step done">
             <div className="node"><PenLine size={15} /></div>
-            <div className="st-t">Ditandatangani di Freighter</div>
-            <div className="st-d">{t} · disetujui pemilik dompet</div>
+            <div className="st-t">Signed in Freighter</div>
+            <div className="st-d">{t} · approved by wallet owner</div>
           </div>
           <div className="tl-step done">
             <div className="node"><Layers size={15} /></div>
-            <div className="st-t">Dikonfirmasi di ledger</div>
+            <div className="st-t">Confirmed on ledger</div>
             <div className="st-d">{t} · ledger #{ledger}</div>
             <a className="st-hash" href={link} target="_blank" rel="noreferrer">
               {shortKey(hash, 6, 6)} <ExternalLink size={11} />
@@ -49,8 +49,8 @@ export default function Track() {
           </div>
           <div className="tl-step done">
             <div className="node"><Check size={16} /></div>
-            <div className="st-t">Diterima penerima</div>
-            <div className="st-d">Dana sudah ada di dompet {shortKey(recipient.wallet)}</div>
+            <div className="st-t">Received by recipient</div>
+            <div className="st-d">Funds are now in wallet {shortKey(recipient.wallet)}</div>
           </div>
           <div className="tl-step pending-step">
             <div className="node"><Banknote size={15} /></div>
@@ -60,10 +60,10 @@ export default function Track() {
         </div>
 
         <a className="explorer-link" href={link} target="_blank" rel="noreferrer">
-          <ExternalLink size={15} /> Lihat di stellar.expert
+          <ExternalLink size={15} /> View on stellar.expert
         </a>
         <button className="btn btn-ghost" style={{ marginTop: "var(--space-md)" }} onClick={() => push("claim")}>
-          <HandCoins size={15} /> Pratinjau sisi penerima
+          <HandCoins size={15} /> Preview recipient view
         </button>
       </div>
     </div>

@@ -21,10 +21,10 @@ export default function Recipients() {
   return (
     <>
       <div className="app-body">
-        <AppBar title="Penerima" />
+        <AppBar title="Recipients" />
         <div className="pad">
           <button className="add-rec" onClick={() => setEditing("new")}>
-            <UserPlus size={17} /> Tambah penerima baru
+            <UserPlus size={17} /> Add new recipient
           </button>
           <div style={{ marginTop: "var(--space-lg)" }}>
             {recipients.map((r) => (
@@ -69,14 +69,14 @@ function RecipientForm({ initial, onCancel, onSave }) {
 
   return (
     <div className="app-body">
-      <AppBar title={initial ? "Ubah penerima" : "Penerima baru"} showBack />
+      <AppBar title={initial ? "Edit recipient" : "New recipient"} showBack />
       <div className="pad">
         <div className="field">
-          <label>Nama</label>
+          <label>Name</label>
           <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ibu Sri Wahyuni" />
         </div>
         <div className="field">
-          <label>Alamat dompet Stellar</label>
+          <label>Stellar wallet address</label>
           <textarea
             value={wallet}
             onChange={(e) => setWallet(e.target.value)}
@@ -84,19 +84,19 @@ function RecipientForm({ initial, onCancel, onSave }) {
             placeholder="G…"
           />
           {touched && wallet && !walletValid && (
-            <div className="field-error">Alamat Stellar tidak valid (harus diawali G, 56 karakter).</div>
+            <div className="field-error">Invalid Stellar address (must start with G, 56 characters).</div>
           )}
         </div>
         <div className="field">
-          <label>Label dompet (opsional)</label>
+          <label>Wallet label (optional)</label>
           <input value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Freighter / LOBSTR" />
         </div>
       </div>
       <div className="pad push-bottom">
         <div style={{ display: "flex", gap: "var(--space-md)" }}>
-          <button className="btn btn-ghost" onClick={onCancel}>Batal</button>
+          <button className="btn btn-ghost" onClick={onCancel}>Cancel</button>
           <button className="btn btn-primary" onClick={submit} disabled={!canSave}>
-            Simpan <ArrowRight size={16} />
+            Save <ArrowRight size={16} />
           </button>
         </div>
       </div>

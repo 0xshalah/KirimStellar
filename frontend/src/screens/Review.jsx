@@ -11,9 +11,9 @@ export default function Review() {
   if (!draft?.recipient) {
     return (
       <div className="app-body">
-        <AppBar title="Cek sebelum kirim" showBack />
+        <AppBar title="Review before sending" showBack />
         <div className="state-wrap">
-          <p>Data kiriman belum lengkap.</p>
+          <p>Transfer details incomplete.</p>
         </div>
       </div>
     );
@@ -23,7 +23,7 @@ export default function Review() {
 
   return (
     <div className="app-body">
-      <AppBar title="Cek sebelum kirim" showBack />
+      <AppBar title="Review before sending" showBack />
       <div className="pad">
         <div className="review-amt">
           <div className="big">{amount} <span style={{ color: "var(--muted)", fontSize: "1.25rem" }}>{code}</span></div>
@@ -31,17 +31,17 @@ export default function Review() {
         </div>
 
         <div className="card card-pad">
-          <div className="kv"><span className="k">Penerima</span><span className="v">{recipient.name}</span></div>
-          <div className="kv"><span className="k">Dompet</span><span className="v">{shortKey(recipient.wallet)}</span></div>
+          <div className="kv"><span className="k">Recipients</span><span className="v">{recipient.name}</span></div>
+          <div className="kv"><span className="k">Wallet</span><span className="v">{shortKey(recipient.wallet)}</span></div>
           <div className="kv"><span className="k">Aset</span><span className="v">{code}</span></div>
-          <div className="kv"><span className="k">Biaya jaringan</span><span className="v free">~0.00001 XLM</span></div>
-          <div className="kv"><span className="k">Estimasi kurs</span><span className="v">1 {code} ≈ {toIdr(1).toLocaleString("id-ID")} IDR</span></div>
-          <div className="kv"><span className="k">Jaringan</span><span className="v">Stellar Testnet</span></div>
+          <div className="kv"><span className="k">Network fee</span><span className="v free">~0.00001 XLM</span></div>
+          <div className="kv"><span className="k">Estimated rate</span><span className="v">1 {code} ≈ {toIdr(1).toLocaleString("id-ID")} IDR</span></div>
+          <div className="kv"><span className="k">Network</span><span className="v">Stellar Testnet</span></div>
         </div>
 
         <div className="note-box">
           <ShieldCheck size={16} />
-          <span>Kamu menandatangani sendiri lewat Freighter. KirimStellar tidak pernah menyentuh kunci pribadimu.</span>
+          <span>You sign yourself via Freighter. SendStellar never touches your private keys.</span>
         </div>
       </div>
 

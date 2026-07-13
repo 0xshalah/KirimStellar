@@ -33,9 +33,9 @@ export default function Account() {
     try {
       await fundWithFriendbot(address);
       await refresh();
-      setMsg("Berhasil didanai Friendbot. Saldo diperbarui.");
+      setMsg("Berhasil didanai Friendbot. Balance diperbarui.");
     } catch (e) {
-      setMsg(e.message || "Gagal mendanai akun.");
+      setMsg(e.message || "Failed to fund account.");
     } finally {
       setFunding(false);
     }
@@ -44,50 +44,50 @@ export default function Account() {
   return (
     <>
       <div className="app-body">
-        <AppBar title="Akun" />
+        <AppBar title="Account" />
         <div className="pad">
           <div className="state-wrap" style={{ flex: "none", padding: "var(--space-lg) 0 var(--space-xl)" }}>
             <div className="avatar" style={{ width: 84, height: 84, fontSize: "2rem", borderRadius: "50%" }}>
-              {initials("Kamu")}
+              {initials("You")}
             </div>
-            <h3 style={{ marginTop: "var(--space-md)" }}>Dompet kamu</h3>
+            <h3 style={{ marginTop: "var(--space-md)" }}>Your wallet</h3>
             <button className="pill" style={{ marginTop: "var(--space-md)" }} onClick={copy}>
               {copied ? <Check size={14} /> : <Copy size={14} />} {shortKey(address, 6, 6)}
             </button>
           </div>
 
-          <div className="section-title">Dompet</div>
+          <div className="section-title">Wallet</div>
           <div className="settings-group">
-            <div className="set-row"><span className="sico"><Globe size={17} /></span><div><div className="st">Jaringan</div></div><span className="chev">{network?.network || "TESTNET"}</span></div>
+            <div className="set-row"><span className="sico"><Globe size={17} /></span><div><div className="st">Network</div></div><span className="chev">{network?.network || "TESTNET"}</span></div>
             <a className="set-row" href={explorerAccount(address)} target="_blank" rel="noreferrer">
-              <span className="sico"><ExternalLink size={17} /></span><div><div className="st">Lihat di explorer</div><div className="sd">stellar.expert</div></div><span className="chev"><ChevronRight size={16} /></span>
+              <span className="sico"><ExternalLink size={17} /></span><div><div className="st">View on explorer</div><div className="sd">stellar.expert</div></div><span className="chev"><ChevronRight size={16} /></span>
             </a>
             {isTestnet && (
               <div className="set-row" onClick={funding ? undefined : fund}>
                 <span className="sico"><Droplet size={17} /></span>
-                <div><div className="st">Danai akun (Friendbot)</div><div className="sd">10.000 XLM testnet gratis</div></div>
+                <div><div className="st">Fund account (Friendbot)</div><div className="sd">Free 10,000 testnet XLM</div></div>
                 <span className="chev">{funding ? <span className="spinner" /> : <ChevronRight size={16} />}</span>
               </div>
             )}
           </div>
           {msg && <div className="muted-note" style={{ marginTop: 0, marginBottom: "var(--space-lg)" }}>{msg}</div>}
 
-          <div className="section-title">Preferensi</div>
+          <div className="section-title">Preferences</div>
           <div className="settings-group">
-            <div className="set-row"><span className="sico"><Globe size={17} /></span><div><div className="st">Bahasa</div></div><span className="chev">Indonesia <ChevronRight size={16} /></span></div>
-            <div className="set-row" onClick={() => setNotif((v) => !v)}><span className="sico"><Bell size={17} /></span><div><div className="st">Notifikasi</div><div className="sd">Kabari saat penerima klaim</div></div><button className={`toggle-sw${notif ? "" : " off"}`} aria-label="Notifikasi" /></div>
-            <div className="set-row" onClick={() => setBio((v) => !v)}><span className="sico"><Fingerprint size={17} /></span><div><div className="st">Kunci biometrik</div><div className="sd">Sidik jari tiap kirim</div></div><button className={`toggle-sw${bio ? "" : " off"}`} aria-label="Biometrik" /></div>
+            <div className="set-row"><span className="sico"><Globe size={17} /></span><div><div className="st">Language</div></div><span className="chev">Indonesia <ChevronRight size={16} /></span></div>
+            <div className="set-row" onClick={() => setNotif((v) => !v)}><span className="sico"><Bell size={17} /></span><div><div className="st">Notifications</div><div className="sd">Notify when recipient claims</div></div><button className={`toggle-sw${notif ? "" : " off"}`} aria-label="Notifications" /></div>
+            <div className="set-row" onClick={() => setBio((v) => !v)}><span className="sico"><Fingerprint size={17} /></span><div><div className="st">Biometric lock</div><div className="sd">Fingerprint for each send</div></div><button className={`toggle-sw${bio ? "" : " off"}`} aria-label="Biometric" /></div>
           </div>
 
-          <div className="section-title">Keamanan &amp; dukungan</div>
+          <div className="section-title">Security &amp; support</div>
           <div className="settings-group">
-            <div className="set-row" onClick={() => push("claim")}><span className="sico"><HandCoins size={17} /></span><div><div className="st">Pratinjau sisi penerima</div><div className="sd">Lihat layar klaim keluarga</div></div><span className="chev"><ChevronRight size={16} /></span></div>
-            <div className="set-row"><span className="sico"><Shield size={17} /></span><div><div className="st">Keamanan dompet</div></div><span className="chev"><ChevronRight size={16} /></span></div>
-            <div className="set-row"><span className="sico"><LifeBuoy size={17} /></span><div><div className="st">Bantuan</div></div><span className="chev"><ChevronRight size={16} /></span></div>
+            <div className="set-row" onClick={() => push("claim")}><span className="sico"><HandCoins size={17} /></span><div><div className="st">Preview recipient view</div><div className="sd">See family claim screen</div></div><span className="chev"><ChevronRight size={16} /></span></div>
+            <div className="set-row"><span className="sico"><Shield size={17} /></span><div><div className="st">Wallet security</div></div><span className="chev"><ChevronRight size={16} /></span></div>
+            <div className="set-row"><span className="sico"><LifeBuoy size={17} /></span><div><div className="st">Help</div></div><span className="chev"><ChevronRight size={16} /></span></div>
           </div>
 
           <div className="settings-group">
-            <div className="set-row" onClick={disconnect}><span className="sico danger"><LogOut size={17} /></span><div><div className="st danger">Putuskan dompet</div></div></div>
+            <div className="set-row" onClick={disconnect}><span className="sico danger"><LogOut size={17} /></span><div><div className="st danger">Disconnect wallet</div></div></div>
           </div>
         </div>
       </div>

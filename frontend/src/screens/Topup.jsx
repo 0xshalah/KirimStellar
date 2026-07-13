@@ -22,7 +22,7 @@ export default function Topup() {
       await refresh();
       setDone(true);
     } catch (e) {
-      setError(e.message || "Gagal mendanai akun.");
+      setError(e.message || "Failed to fund account.");
     } finally {
       setFunding(false);
     }
@@ -30,26 +30,26 @@ export default function Topup() {
 
   return (
     <div className="app-body">
-      <AppBar title="Isi saldo" showBack />
+      <AppBar title="Top up" showBack />
       <div className="pad">
         {isTestnet ? (
           <>
             <div className="note-box" style={{ background: "var(--good-bg)", color: "var(--good)" }}>
               <Info size={16} />
-              <span>Ini mode Testnet. Isi saldo memakai Friendbot yang memberi 10.000 XLM gratis untuk pengujian.</span>
+              <span>Ini mode Testnet. Top up memakai Friendbot yang memberi 10.000 XLM gratis untuk pengujian.</span>
             </div>
 
             {done ? (
               <div className="state-wrap">
                 <div className="state-ico lime"><Droplet size={30} /></div>
-                <h3>Saldo terisi!</h3>
-                <p>Akunmu didanai Friendbot. Saldo {code} sudah diperbarui.</p>
-                <button className="btn btn-primary btn-auto" onClick={() => goTab("home")}>Ke beranda</button>
+                <h3>Balance topped up!</h3>
+                <p>Accountmu didanai Friendbot. Balance {code} has been updated.</p>
+                <button className="btn btn-primary btn-auto" onClick={() => goTab("home")}>Back to home</button>
               </div>
             ) : (
               <div style={{ marginTop: "var(--space-2xl)" }}>
                 <button className="btn btn-primary" onClick={fund} disabled={funding}>
-                  {funding ? <><span className="spinner" /> Mendanai…</> : <><Droplet size={17} /> Danai 10.000 XLM (Friendbot)</>}
+                  {funding ? <><span className="spinner" /> Funding…</> : <><Droplet size={17} /> Fund 10,000 XLM (Friendbot)</>}
                 </button>
                 {error && <div className="field-error">{error}</div>}
               </div>
@@ -58,10 +58,10 @@ export default function Topup() {
         ) : (
           <div className="state-wrap">
             <div className="state-ico neutral"><Info size={30} /></div>
-            <h3>On-ramp produksi</h3>
-            <p>Isi saldo lewat anchor IDR (Virtual Account / QRIS / e-wallet) tersedia di jaringan utama. Menyusul.</p>
+            <h3>Production on-ramp</h3>
+            <p>Top up lewat anchor IDR (Virtual Account / QRIS / e-wallet) tersedia di jaringan utama. Menyusul.</p>
             <button className="btn btn-ghost btn-auto" onClick={() => goTab("home")}>
-              Kembali <ArrowRight size={15} />
+              Back <ArrowRight size={15} />
             </button>
           </div>
         )}

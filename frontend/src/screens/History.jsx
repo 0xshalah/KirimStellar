@@ -5,9 +5,9 @@ import { AppBar, BottomNav } from "../components/ui.jsx";
 import { formatAmount, initials, timeLabel, shortKey } from "../lib/format.js";
 
 const FILTERS = [
-  { key: "all", label: "Semua" },
-  { key: "out", label: "Keluar" },
-  { key: "in", label: "Masuk" },
+  { key: "all", label: "All" },
+  { key: "out", label: "Outgoing" },
+  { key: "in", label: "Incoming" },
 ];
 
 export default function History() {
@@ -26,7 +26,7 @@ export default function History() {
   return (
     <>
       <div className="app-body">
-        <AppBar title="Riwayat" />
+        <AppBar title="History" />
         <div className="filter-row">
           {FILTERS.map((f) => (
             <button
@@ -54,23 +54,23 @@ export default function History() {
           ) : rows.length === 0 ? (
             <div className="state-wrap">
               <div className="state-ico neutral"><SendHorizontal size={30} /></div>
-              <h3>Belum ada kiriman</h3>
-              <p>Begitu kamu kirim yang pertama, semua riwayatnya muncul di sini.</p>
-              <button className="btn btn-primary btn-auto" onClick={() => push("send")}>Kirim pertama</button>
+              <h3>No transfers yet</h3>
+              <p>Once you send your first transfer, all history will appear here.</p>
+              <button className="btn btn-primary btn-auto" onClick={() => push("send")}>Send first</button>
             </div>
           ) : (
             rows.map((tx) => (
               <div className="tx-item" key={tx.id} onClick={() => openTx(tx)}>
                 <div className={`tavatar${tx.outgoing ? "" : " in"}`}>{initials(shortKey(tx.counterparty, 2, 2))}</div>
                 <div className="tinfo">
-                  <div className="tn">{tx.outgoing ? "Ke " : "Dari "}{shortKey(tx.counterparty)}</div>
+                  <div className="tn">{tx.outgoing ? "To " : "From "}{shortKey(tx.counterparty)}</div>
                   <div className="td">{timeLabel(tx.createdAt)}</div>
                 </div>
                 <div className="tright">
                   <div className={`ta${tx.outgoing ? "" : " in"}`}>
                     {tx.outgoing ? "-" : "+"}{formatAmount(tx.amount)} {tx.assetCode}
                   </div>
-                  <div className="ts done">Selesai</div>
+                  <div className="ts done">Completed</div>
                 </div>
               </div>
             ))

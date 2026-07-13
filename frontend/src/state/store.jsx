@@ -87,7 +87,7 @@ export function AppProvider({ children }) {
     try {
       const installed = await wallet.isFreighterInstalled();
       if (!installed) {
-        throw new Error("Freighter belum terpasang. Install ekstensinya dulu di freighter.app");
+        throw new Error("Freighter is not installed. Install the extension first at freighter.app");
       }
       const addr = await wallet.connect();
       const net = await wallet.getNetwork().catch(() => null);
