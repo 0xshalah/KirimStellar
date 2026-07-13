@@ -22,12 +22,12 @@ export default function Login() {
         <aside className="auth-panel">
           <div className="pbrand"><span className="mark"><SendHorizontal size={17} /></span> KirimStellar</div>
           <div className="panel-body">
-            <h2>Uang untuk keluarga, <span className="hl">tiba dalam detik.</span></h2>
+            <h2>Money for family, <span className="hl">arrives in seconds.</span></h2>
             <div className="panel-quote">
-              <p>"Dulu tiap kirim ke ibu, kena potong hampir 200 ribu dan nunggu dua hari. Sekarang sampai sebelum aku sempat telepon."</p>
+              <p>"Every time I sent money home, nearly 200K was lost in fees and it took two days. Now it lands before I can even call."</p>
               <div className="who">
                 <span className="a">SW</span>
-                <div><div className="n">Siti W.</div><div className="r">Pekerja rumah tangga, Hong Kong</div></div>
+                <div><div className="n">Siti W.</div><div className="r">Domestic worker, Hong Kong</div></div>
               </div>
             </div>
           </div>
@@ -35,47 +35,47 @@ export default function Login() {
 
         <main className="form-side">
           <div className="form-card">
-            <p className="top-link">Belum punya akun? <a onClick={() => setAuthView("register")}>Daftar gratis</a></p>
-            <h1>Selamat datang kembali</h1>
-            <p className="sub">Masuk untuk kirim uang ke rumah.</p>
+            <p className="top-link">Don't have an account? <a onClick={() => setAuthView("register")}>Sign up free</a></p>
+            <h1>Welcome back</h1>
+            <p className="sub">Log in to send money home.</p>
 
             <form className="auth-form" onSubmit={(e) => { e.preventDefault(); handleFreighter(); }}>
               <div className="afield">
                 <label htmlFor="email">Email</label>
                 <div className="input-wrap">
                   <Mail size={17} />
-                  <input type="email" id="email" placeholder="kamu@email.com" autoComplete="email" />
+                  <input type="email" id="email" placeholder="you@email.com" autoComplete="email" />
                 </div>
               </div>
               <div className="afield">
-                <label htmlFor="password">Kata sandi</label>
+                <label htmlFor="password">Password</label>
                 <div className="input-wrap">
                   <Lock size={17} />
-                  <input type={showPw ? "text" : "password"} id="password" placeholder="Masukkan kata sandi" autoComplete="current-password" />
-                  <button type="button" className="toggle" onClick={() => setShowPw((s) => !s)} aria-label="Tampilkan kata sandi">
+                  <input type={showPw ? "text" : "password"} id="password" placeholder="Enter your password" autoComplete="current-password" />
+                  <button type="button" className="toggle" onClick={() => setShowPw((s) => !s)} aria-label="Show password">
                     {showPw ? <EyeOff size={17} /> : <Eye size={17} />}
                   </button>
                 </div>
               </div>
               <div className="row-between">
-                <label className="acheck"><input type="checkbox" /> Ingat saya</label>
-                <a className="forgot">Lupa sandi?</a>
+                <label className="acheck"><input type="checkbox" /> Remember me</label>
+                <a className="forgot">Forgot password?</a>
               </div>
               <button type="submit" className="abtn-primary" disabled={connecting}>
-                {connecting ? "Menyambungkan…" : <>Masuk <ArrowRight size={17} /></>}
+                {connecting ? "Connecting…" : <>Log in <ArrowRight size={17} /></>}
               </button>
             </form>
 
-            <div className="adivider">atau</div>
+            <div className="adivider">or</div>
 
             <button type="button" className="wallet-btn" onClick={handleFreighter} disabled={connecting}>
               <span className="wico">F</span>
-              {connecting ? "Membuka Freighter…" : "Lanjut dengan Freighter Wallet"}
+              {connecting ? "Opening Freighter…" : "Continue with Freighter Wallet"}
             </button>
 
             {(err || walletError) && <p className="auth-err" style={{ marginTop: "var(--space-md)" }}>{err || walletError}</p>}
 
-            <p className="foot-note">Autentikasi memakai dompet Freighter (non-custodial). <a onClick={() => setAuthView("landing")}>Kembali ke beranda</a></p>
+            <p className="foot-note">Authenticate using Freighter wallet (non-custodial). <a onClick={() => setAuthView("landing")}>Back to home</a></p>
           </div>
         </main>
       </div>
