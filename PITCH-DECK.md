@@ -1,10 +1,8 @@
-# KirimStellar — Pitch Deck (Ready for Canva)
+# KirimStellar — Pitch Deck
 
-> Copy-paste each slide into Canva. Visual suggestions in `[brackets]`.
+> ✅ **HTML version complete:** `prototypes/kirimstellar-pitch-deck.html` (interactive, 11 slides)
+> This file is the content outline. Use it for reference or Canva export.
 > Canva template: https://canva.link/m9isikrjvmeirxf
-> 
-> **Verify before finalizing:** All numbers must match repo exactly.
-> 203 lines Rust · 9 tests passing · Contract ID: CDP6BDSF3JXIDED6TACKTXTJV4H47B3HHN3FUM7SHINUALTLEUHC24TJ · Wasm: 5,758 bytes
 
 ---
 

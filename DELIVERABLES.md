@@ -177,8 +177,8 @@ Incumbent remittance providers (Western Union, MoneyGram) charge 5-7% and take 2
 | 1 | Project Description | `DELIVERABLES.md` (Section 1) | ✅ Done |
 | 2 | Public GitHub Repository | [github.com/0xshalah/KirimStellar](https://github.com/0xshalah/KirimStellar) | ✅ Done |
 | 3 | Project README | [github.com/0xshalah/KirimStellar/README.md](https://github.com/0xshalah/KirimStellar) | ✅ Done |
-| 4 | Demo Video | Record using script in Section 2 | ⬜ Need to record |
-| 5 | Pitch Deck | Create from outline in Section 3 | ⬜ Need to build in Canva |
+| 4 | Demo Video | Record using shot list in `DEMO-SHOTS.md` | ⬜ Need to record |
+| 5 | Pitch Deck | ✅ HTML version: `kirimstellar-pitch-deck.html` (save to prototypes/) | 🟡 HTML done, may need export |
 
 ### Pre-Submit Checks
 
