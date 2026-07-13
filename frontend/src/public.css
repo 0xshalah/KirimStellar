@@ -3,7 +3,8 @@
    Ported from the KirimStellar mockups. Design tokens live in index.css :root
    ============================================================ */
 
-.landing, .auth { min-height: 100vh; background: var(--cream); color: var(--ink); }
+.landing, .auth { min-height: 100vh; background: oklch(94% 0.014 128); color: var(--ink); }
+.landing { background: radial-gradient(1200px 600px at 50% 0%, oklch(90% 0.05 128 / 0.45), oklch(94% 0.014 128) 60%); }
 .landing h1, .landing h2, .landing h3,
 .auth h1, .auth h2, .auth h3 { text-wrap: balance; letter-spacing: -0.03em; line-height: 1.1; }
 
