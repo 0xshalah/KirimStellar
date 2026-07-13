@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<!-- skill:libraries -->
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js" integrity="sha384-wHFvAtjmgnkA2PJcMsDaCgdipf7X7YV44X/igbLHpvGiq6T5/PvFKl93grpvtbQT" crossorigin="anonymous"></script>
+<script>document.addEventListener("DOMContentLoaded",()=>lucide.createIcons())</script>
+<!-- /skill:libraries -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KirimStellar — Send money home in seconds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lime: oklch(87% 0.185 128);
+    --lime-press: oklch(81% 0.18 128);
+    --forest: oklch(27% 0.055 155);
+    --forest-deep: oklch(21% 0.05 155);
+    --forest-soft: oklch(40% 0.04 155);
+    --cream: oklch(97.5% 0.018 95);
+    --surface: oklch(99% 0.008 95);
+    --ink: oklch(24% 0.03 155);
+    --muted: oklch(52% 0.02 155);
+    --muted-on-dark: oklch(78% 0.02 128);
+    --line: oklch(90% 0.012 130);
+    --line-strong: oklch(84% 0.016 130);
+    --good: oklch(62% 0.14 155);
+
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 16px;
+    --space-xl: 24px;
+    --space-2xl: 32px;
+    --space-3xl: 48px;
+    --space-4xl: 72px;
+    --space-5xl: 112px;
+
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --r-sm: 10px;
+    --r-md: 16px;
+    --r-lg: 24px;
+    --r-xl: 32px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 { text-wrap: balance; letter-spacing: -0.03em; line-height: 1.08; }
+  p { text-wrap: pretty; }
+
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 var(--space-xl); }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--forest-soft);
+  }
+
+  /* ---------- NAV ---------- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: oklch(97.5% 0.018 95 / 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: var(--space-md) var(--space-xl);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: 800;
+    font-size: 1.125rem;
+    letter-spacing: -0.03em;
+  }
+  .brand .mark {
+    width: 32px; height: 32px;
+    background: var(--lime);
+    border-radius: 9px;
+    display: grid; place-items: center;
+    color: var(--forest);
+  }
+  .nav-links {
+    display: flex;
+    gap: var(--space-xl);
+    margin-left: auto;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--forest-soft);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: color 140ms var(--ease-out-quint);
+  }
+  .nav-links a:hover { color: var(--forest); }
+  .btn {
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    border-radius: 999px;
+    padding: var(--space-sm) var(--space-lg);
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    transition: transform 120ms var(--ease-out-quint), background 120ms var(--ease-out-quint);
+    white-space: nowrap;
+  }
+  .btn-lime { background: var(--lime); color: var(--forest); }
+  .btn-lime:hover { background: oklch(89% 0.19 128); }
+  .btn-lime:active { transform: scale(0.97); background: var(--lime-press); }
+  .btn-ghost { background: transparent; color: var(--forest); }
+  .btn-ghost:hover { background: oklch(93% 0.02 128); }
+  .nav-cta { display: flex; align-items: center; gap: var(--space-sm); }
+
+  @media (max-width: 800px) {
+    .nav-links { display: none; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: var(--space-4xl);
+    align-items: center;
+    padding: var(--space-5xl) 0 var(--space-4xl);
+  }
+  .hero-copy h1 {
+    font-size: clamp(2.5rem, 5.5vw, 4rem);
+    font-weight: 800;
+  }
+  .hero-copy h1 .accent {
+    background: var(--lime);
+    padding: 0 0.15em;
+    border-radius: 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .hero-copy p.lead {
+    font-size: 1.1875rem;
+    color: var(--forest-soft);
+    font-weight: 500;
+    margin-top: var(--space-xl);
+    max-width: 34ch;
+  }
+  .hero-actions {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-2xl);
+    flex-wrap: wrap;
+  }
+  .btn-lg { padding: var(--space-md) var(--space-xl); font-size: 1.0625rem; }
+  .hero-trust {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    margin-top: var(--space-2xl);
+    font-size: 0.875rem;
+    color: var(--muted);
+    font-weight: 600;
+    flex-wrap: wrap;
+  }
+  .hero-trust .item { display: flex; align-items: center; gap: 6px; }
+  .hero-trust .item i { color: var(--good); }
+
+  /* Hero visual: the converter card */
+  .hero-visual { position: relative; display: flex; justify-content: center; }
+  .card {
+    width: 100%;
+    max-width: 380px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-xl);
+    box-shadow: 0 24px 60px -30px oklch(27% 0.055 155 / 0.35);
+    overflow: hidden;
+  }
+  .leg {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-xl);
+  }
+  .leg-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .amount {
+    font-size: 2.125rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    border: none; background: none; outline: none;
+    width: 100%;
+    color: var(--ink);
+    font-family: inherit;
+    padding: 0;
+  }
+  .amount:focus-visible { color: var(--forest); }
+  .amount .cur { color: var(--muted); font-weight: 600; }
+  .pill {
+    display: flex; align-items: center; gap: var(--space-sm);
+    background: var(--cream);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: var(--space-sm) var(--space-md);
+    font-weight: 700; font-size: 0.875rem;
+    white-space: nowrap;
+  }
+  .flag { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 0.6875rem; overflow: hidden; }
+  .flag.usdc { background: oklch(62% 0.16 250); color: white; font-weight: 800; }
+  .flag.idr { background: linear-gradient(180deg, oklch(60% 0.19 25) 50%, white 50%); }
+  .rail {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: var(--space-lg) var(--space-xl);
+    background: oklch(98.5% 0.012 128);
+    display: flex; flex-direction: column; gap: var(--space-md);
+  }
+  .rail-row { display: flex; align-items: center; gap: var(--space-md); font-size: 0.8125rem; font-weight: 600; color: var(--forest-soft); }
+  .rail-row .ico { width: 24px; height: 24px; border-radius: 7px; background: var(--surface); border: 1px solid var(--line); display: grid; place-items: center; color: var(--forest); flex-shrink: 0; }
+  .rail-row .val { margin-left: auto; color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .rail-row .val.free { color: var(--good); }
+  .card-cta {
+    margin: var(--space-lg) var(--space-xl) var(--space-xl);
+    width: calc(100% - var(--space-xl) * 2);
+    background: var(--lime); color: var(--forest);
+    border: none; border-radius: 999px;
+    padding: var(--space-md); font-weight: 800; font-size: 1rem;
+    font-family: inherit; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: var(--space-sm);
+    transition: transform 120ms var(--ease-out-quint), background 120ms var(--ease-out-quint);
+  }
+  .card-cta:hover { background: oklch(89% 0.19 128); }
+  .card-cta:active { transform: scale(0.98); }
+
+  /* floating badge */
+  .float-badge {
+    position: absolute;
+    top: -14px; right: -6px;
+    background: var(--forest);
+    color: var(--lime);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: 999px;
+    display: flex; align-items: center; gap: 6px;
+    box-shadow: 0 8px 24px -8px oklch(27% 0.055 155 / 0.5);
+  }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: var(--space-3xl); padding: var(--space-4xl) 0 var(--space-3xl); text-align: left; }
+    .hero-copy p.lead { max-width: none; }
+    .float-badge { right: 12px; }
+  }
+
+  /* ---------- LOGOS / STRIP ---------- */
+  .strip {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .strip-inner {
+    max-width: 1160px; margin: 0 auto;
+    padding: var(--space-xl);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--space-xl); flex-wrap: wrap;
+  }
+  .strip-item { display: flex; flex-direction: column; gap: 2px; }
+  .strip-item .n { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .strip-item .l { font-size: 0.8125rem; color: var(--muted); font-weight: 600; }
+
+  /* ---------- SECTION ---------- */
+  section.block { padding: var(--space-5xl) 0; }
+  .section-head { max-width: 46ch; margin-bottom: var(--space-3xl); }
+  .section-head h2 { font-size: clamp(1.875rem, 3.5vw, 2.75rem); font-weight: 800; margin-top: var(--space-md); }
+  .section-head p { color: var(--forest-soft); font-size: 1.0625rem; font-weight: 500; margin-top: var(--space-md); }
+
+  /* How it works: 3 step rail */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xl); position: relative; }
+  .step { position: relative; }
+  .step .num {
+    width: 44px; height: 44px;
+    background: var(--forest); color: var(--lime);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-weight: 800; font-size: 1.125rem;
+    margin-bottom: var(--space-lg);
+  }
+  .step h3 { font-size: 1.25rem; font-weight: 700; }
+  .step p { color: var(--forest-soft); font-size: 0.9375rem; font-weight: 500; margin-top: var(--space-sm); max-width: 34ch; }
+  @media (max-width: 800px) { .steps { grid-template-columns: 1fr; gap: var(--space-2xl); } }
+
+  /* Comparison */
+  .compare {
+    background: var(--forest);
+    color: oklch(96% 0.02 128);
+    border-radius: var(--r-xl);
+    padding: var(--space-4xl);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4xl);
+    align-items: center;
+  }
+  .compare h2 { font-size: clamp(1.875rem, 3.5vw, 2.5rem); font-weight: 800; color: oklch(97% 0.02 128); }
+  .compare .lead { color: var(--muted-on-dark); font-weight: 500; margin-top: var(--space-lg); font-size: 1.0625rem; }
+  .compare-rows { display: flex; flex-direction: column; gap: var(--space-md); }
+  .crow {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: var(--space-lg);
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid oklch(40% 0.04 155);
+  }
+  .crow:last-child { border-bottom: none; }
+  .crow .label { font-weight: 600; font-size: 0.9375rem; color: var(--muted-on-dark); }
+  .crow .old { text-align: right; font-weight: 600; color: oklch(70% 0.05 30); text-decoration: line-through; font-variant-numeric: tabular-nums; font-size: 0.9375rem; }
+  .crow .new { text-align: right; font-weight: 800; color: var(--lime); font-variant-numeric: tabular-nums; min-width: 6ch; }
+  @media (max-width: 800px) { .compare { grid-template-columns: 1fr; padding: var(--space-2xl); gap: var(--space-2xl); } }
+
+  /* Feature grid (asymmetric, not identical cards) */
+  .features { display: grid; grid-template-columns: 1.4fr 1fr 1fr; grid-auto-rows: 1fr; gap: var(--space-lg); }
+  .feat {
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    padding: var(--space-2xl);
+    background: var(--surface);
+    display: flex; flex-direction: column;
+  }
+  .feat.wide { grid-column: span 2; background: var(--lime); border-color: transparent; }
+  .feat .fico { width: 40px; height: 40px; border-radius: 11px; background: var(--cream); border: 1px solid var(--line); display: grid; place-items: center; color: var(--forest); margin-bottom: var(--space-lg); }
+  .feat.wide .fico { background: var(--forest); color: var(--lime); border-color: transparent; }
+  .feat h3 { font-size: 1.1875rem; font-weight: 700; }
+  .feat.wide h3 { font-size: 1.5rem; }
+  .feat p { color: var(--forest-soft); font-size: 0.9375rem; font-weight: 500; margin-top: var(--space-sm); }
+  .feat.wide p { color: var(--forest); max-width: 40ch; }
+  @media (max-width: 900px) {
+    .features { grid-template-columns: 1fr 1fr; }
+    .feat.wide { grid-column: span 2; }
+  }
+  @media (max-width: 620px) {
+    .features { grid-template-columns: 1fr; }
+    .feat.wide { grid-column: span 1; }
+  }
+
+  /* CTA band */
+  .cta-band { text-align: center; padding: var(--space-5xl) 0; }
+  .cta-band h2 { font-size: clamp(2rem, 4.5vw, 3.25rem); font-weight: 800; max-width: 20ch; margin: 0 auto; }
+  .cta-band p { color: var(--forest-soft); font-size: 1.125rem; font-weight: 500; margin-top: var(--space-lg); }
+  .cta-band .hero-actions { justify-content: center; margin-top: var(--space-2xl); }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--line); padding: var(--space-3xl) 0; }
+  .foot-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); flex-wrap: wrap; }
+  .foot-inner .fnote { color: var(--muted); font-size: 0.8125rem; font-weight: 500; }
+  .foot-links { display: flex; gap: var(--space-xl); list-style: none; }
+  .foot-links a { color: var(--forest-soft); text-decoration: none; font-weight: 600; font-size: 0.875rem; }
+  .foot-links a:hover { color: var(--forest); }
+
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 700ms var(--ease-out-expo), transform 700ms var(--ease-out-expo); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="brand">
+        <span class="mark"><i data-lucide="send-horizontal" width="17" height="17"></i></span>
+        KirimStellar
+      </div>
+      <ul class="nav-links">
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#cost">Cost</a></li>
+        <li><a href="#features">Features</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="#" class="btn btn-ghost">Log in</a>
+        <a href="#start" class="btn btn-lime">Send money</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="wrap">
+    <div class="hero">
+      <div class="hero-copy">
+        <h1>Send money home in <span class="accent">seconds</span></h1>
+        <p class="lead">Built for Indonesian workers abroad. Near-zero fees, honest rates, money that lands before you close the app.</p>
+        <div class="hero-actions">
+          <a href="#start" class="btn btn-lime btn-lg">Start sending <i data-lucide="arrow-right" width="18" height="18"></i></a>
+          <a href="#how" class="btn btn-ghost btn-lg">See how it works</a>
+        </div>
+        <div class="hero-trust">
+          <span class="item"><i data-lucide="zap" width="15" height="15"></i> Arrives in ~5s</span>
+          <span class="item"><i data-lucide="badge-percent" width="15" height="15"></i> Fee &lt; 0.1%</span>
+          <span class="item"><i data-lucide="shield-check" width="15" height="15"></i> On-chain escrow</span>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="card">
+          <div class="float-badge"><i data-lucide="zap" width="12" height="12"></i> Arrives in ~5s</div>
+          <div class="leg">
+            <div>
+              <div class="leg-label">You send</div>
+              <input class="amount" id="sendAmount" value="200.00" inputmode="decimal" aria-label="Amount to send in USDC">
+            </div>
+            <span class="pill"><span class="flag usdc">$</span> USDC</span>
+          </div>
+          <div class="rail">
+            <div class="rail-row"><span class="ico"><i data-lucide="zap" width="13" height="13"></i></span> Network fee <span class="val free">$0.02</span></div>
+            <div class="rail-row"><span class="ico"><i data-lucide="repeat" width="13" height="13"></i></span> Mid-market rate <span class="val">16,284</span></div>
+          </div>
+          <div class="leg">
+            <div>
+              <div class="leg-label">They receive</div>
+              <div class="amount"><span id="recvAmount">3,256,443</span> <span class="cur">IDR</span></div>
+            </div>
+            <span class="pill"><span class="flag idr"></span> IDR</span>
+          </div>
+          <button class="card-cta" type="button" id="cardCta">Send now <i data-lucide="arrow-right" width="17" height="17"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="strip">
+    <div class="strip-inner">
+      <div class="strip-item"><span class="n">$9.7B</span><span class="l">sent home by TKI each year</span></div>
+      <div class="strip-item"><span class="n">&lt; 0.1%</span><span class="l">fee, not 5-7%</span></div>
+      <div class="strip-item"><span class="n">~5s</span><span class="l">to arrive, not 2-3 days</span></div>
+      <div class="strip-item"><span class="n">1:1</span><span class="l">IDRT backed by Rupiah</span></div>
+    </div>
+  </div>
+
+  <section class="block wrap" id="how">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps. No crypto knowledge required.</h2>
+      <p>You send stable dollars, your family receives Rupiah. Everything in between is handled on Stellar.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="num">1</div>
+        <h3>Connect your wallet</h3>
+        <p>Open Freighter, enter an amount and the recipient's address. Done in one tap.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">2</div>
+        <h3>Funds lock safely</h3>
+        <p>A Soroban escrow contract locks your USDC until your family claims it. Not claimed? It refunds automatically.</p>
+      </div>
+      <div class="step reveal">
+        <div class="num">3</div>
+        <h3>Family receives Rupiah</h3>
+        <p>Auto-converted to IDRT via Stellar's built-in DEX, ready to cash out to a local account.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap" id="cost">
+    <div class="compare reveal">
+      <div>
+        <span class="eyebrow" style="color: var(--lime)">Compare</span>
+        <h2>$600 million a year lost to middlemen.</h2>
+        <p class="lead">Send Rp 3.2M the old way and your family loses nearly Rp 200K. With KirimStellar, almost all of it arrives.</p>
+      </div>
+      <div class="compare-rows">
+        <div class="crow"><span class="label">Transfer fee</span><span class="old">Rp 195,000</span><span class="new">Rp 300</span></div>
+        <div class="crow"><span class="label">Time to arrive</span><span class="old">2-3 days</span><span class="new">~5 seconds</span></div>
+        <div class="crow"><span class="label">Exchange rate</span><span class="old">+3% markup</span><span class="new">mid-market</span></div>
+        <div class="crow"><span class="label">Needs an agent</span><span class="old">Yes</span><span class="new">No</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap" id="features">
+    <div class="section-head reveal">
+      <span class="eyebrow">Why Stellar</span>
+      <h2>Built for money that actually moves.</h2>
+    </div>
+    <div class="features">
+      <div class="feat wide reveal">
+        <div class="fico"><i data-lucide="lock" width="20" height="20"></i></div>
+        <h3>Escrow that guards your money</h3>
+        <p>Every transfer locks in a Soroban smart contract with a timelock. Claimed within 7 days, or it returns to you. No one can touch it in between.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="fico"><i data-lucide="banknote" width="20" height="20"></i></div>
+        <h3>Real Rupiah</h3>
+        <p>IDRT is backed 1:1 to the Rupiah, ready to cash out through a local anchor.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="fico"><i data-lucide="smartphone" width="20" height="20"></i></div>
+        <h3>Mobile-first</h3>
+        <p>Designed for phones, because that's where your family is.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="fico"><i data-lucide="eye" width="20" height="20"></i></div>
+        <h3>Fully transparent</h3>
+        <p>Track every transaction in real time via Horizon, verify it yourself on the explorer.</p>
+      </div>
+      <div class="feat reveal">
+        <div class="fico"><i data-lucide="globe" width="20" height="20"></i></div>
+        <h3>Cross-border</h3>
+        <p>From Malaysia, Hong Kong, Singapore, Taiwan, straight home.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band wrap" id="start">
+    <div class="reveal">
+      <h2>Send your first transfer tonight.</h2>
+      <p>Free to start. Your first transfer can land before your coffee gets cold.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-lime btn-lg">Start sending <i data-lucide="arrow-right" width="18" height="18"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot-inner">
+      <div class="brand">
+        <span class="mark"><i data-lucide="send-horizontal" width="17" height="17"></i></span>
+        KirimStellar
+      </div>
+      <ul class="foot-links">
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#cost">Cost</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="https://github.com/0xshalah/KirimStellar">GitHub</a></li>
+      </ul>
+      <p class="fnote">Built on Stellar · APAC Stellar Hackathon 2026</p>
+    </div>
+  </footer>
+
+<script>
+  const RATE = 16284.21;
+  const sendInput = document.getElementById('sendAmount');
+  const recvEl = document.getElementById('recvAmount');
+  const usd = n => new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(n);
+  function recompute() {
+    const amt = parseFloat(sendInput.value.replace(/,/g, '')) || 0;
+    recvEl.textContent = usd(amt * RATE);
+  }
+  sendInput.addEventListener('input', recompute);
+  sendInput.addEventListener('blur', () => {
+    const amt = parseFloat(sendInput.value.replace(/,/g, '')) || 0;
+    sendInput.value = amt.toFixed(2);
+  });
+  document.getElementById('cardCta').addEventListener('click', e => {
+    e.currentTarget.style.transform = 'scale(0.98)';
+    setTimeout(() => e.currentTarget.style.transform = '', 140);
+  });
+  recompute();
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
