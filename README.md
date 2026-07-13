@@ -59,6 +59,7 @@ KirimStellar lets TKI send money home **in seconds** with **near-zero fees**. Th
 |---|---|
 | 🎥 Demo Video | _add link before submission_ |
 | 📊 Pitch Deck | _add link before submission_ |
+| 🌐 Live Demo | [kirimstellar.edgeone.dev →](https://kirimstellar.edgeone.dev) |
 | 🔍 Live Contract | [stellar.expert →](https://stellar.expert/explorer/testnet/contract/CDP6BDSF3JXIDED6TACKTXTJV4H47B3HHN3FUM7SHINUALTLEUHC24TJ) |
 
 ---
