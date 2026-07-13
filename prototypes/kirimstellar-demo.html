@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<!-- skill:libraries -->
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js" integrity="sha384-wHFvAtjmgnkA2PJcMsDaCgdipf7X7YV44X/igbLHpvGiq6T5/PvFKl93grpvtbQT" crossorigin="anonymous"></script>
+<script>document.addEventListener("DOMContentLoaded",()=>lucide.createIcons())</script>
+<!-- /skill:libraries -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KirimStellar — Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lime: oklch(87% 0.185 128);
+    --lime-press: oklch(81% 0.18 128);
+    --forest: oklch(27% 0.055 155);
+    --forest-deep: oklch(21% 0.05 155);
+    --forest-soft: oklch(40% 0.04 155);
+    --cream: oklch(97.5% 0.018 95);
+    --surface: oklch(99% 0.008 95);
+    --ink: oklch(24% 0.03 155);
+    --muted: oklch(52% 0.02 155);
+    --muted-on-dark: oklch(80% 0.025 128);
+    --line: oklch(90% 0.012 130);
+    --line-strong: oklch(84% 0.016 130);
+    --good: oklch(60% 0.14 155);
+    --good-bg: oklch(94% 0.05 155);
+    --warn: oklch(72% 0.14 75);
+    --warn-bg: oklch(95% 0.05 85);
+    --danger: oklch(56% 0.16 25);
+    --danger-bg: oklch(95% 0.04 25);
+    --info: oklch(62% 0.16 250);
+
+    --space-xs: 4px; --space-sm: 8px; --space-md: 12px; --space-lg: 16px;
+    --space-xl: 24px; --space-2xl: 32px; --space-3xl: 48px; --space-4xl: 72px; --space-5xl: 112px;
+
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --r-sm: 10px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+  }
+  h1,h2,h3,h4 { text-wrap: balance; letter-spacing: -0.03em; line-height: 1.1; }
+  p { text-wrap: pretty; }
+  a { color: inherit; text-decoration: none; }
+
+  .flag { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 0.6875rem; overflow: hidden; flex-shrink: 0; }
+  .flag.usdc { background: var(--info); color: white; font-weight: 800; }
+  .flag.idr { background: linear-gradient(180deg, oklch(60% 0.19 25) 50%, white 50%); }
+
+  .btn { font-family: inherit; font-weight: 800; border: none; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm); transition: transform 120ms var(--ease-out-quint), background 120ms var(--ease-out-quint); }
+  .btn-primary { background: var(--lime); color: var(--forest); padding: var(--space-md) var(--space-xl); font-size: 1rem; width: 100%; }
+  .btn-primary:hover { background: oklch(89% 0.19 128); }
+  .btn-primary:active { transform: scale(0.98); background: var(--lime-press); }
+  .btn-primary:disabled { background: var(--line-strong); color: var(--muted); cursor: not-allowed; }
+  .btn-ghost { background: var(--surface); color: var(--forest); border: 1px solid var(--line-strong); padding: var(--space-md) var(--space-xl); font-size: 0.9375rem; width: 100%; font-weight: 700; }
+  .btn-ghost:hover { background: oklch(97% 0.014 128); border-color: var(--forest); }
+  .btn-dark { background: var(--forest); color: var(--lime); padding: var(--space-md) var(--space-xl); font-size: 1rem; width: 100%; }
+  .btn-dark:hover { background: var(--forest-deep); }
+  .btn-dark:active { transform: scale(0.98); }
+
+  /* ================= VIEW ROUTER ================= */
+  .view { display: none; }
+  .view.active { display: block; animation: fadeIn 260ms var(--ease-out-quint); }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ================= PHONE SHELL ================= */
+  .phone-stage { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: var(--space-xl) var(--space-lg); background: oklch(93% 0.014 128); }
+  .phone { width: 100%; max-width: 400px; height: min(860px, 92vh); background: var(--cream); border: 1px solid var(--line); border-radius: var(--r-xl); box-shadow: 0 30px 70px -40px oklch(27% 0.055 155 / 0.55); overflow: hidden; display: flex; flex-direction: column; position: relative; }
+  .screen { flex: 1; display: flex; flex-direction: column; overflow-y: auto; position: relative; }
+  .screen::-webkit-scrollbar { width: 0; }
+  .app-view { display: none; flex-direction: column; flex: 1; }
+  .app-view.active { display: flex; animation: fadeIn 240ms var(--ease-out-quint); }
+
+  .statusbar { display: flex; align-items: center; justify-content: space-between; padding: var(--space-md) var(--space-lg) var(--space-sm); font-size: 0.75rem; font-weight: 700; color: var(--ink); flex-shrink: 0; }
+  .statusbar .dots { display: flex; align-items: center; gap: 5px; }
+  .appbar { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-sm) var(--space-lg) var(--space-lg); flex-shrink: 0; }
+  .appbar .back { width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--surface); display: grid; place-items: center; color: var(--forest); cursor: pointer; flex-shrink: 0; }
+  .appbar .back:hover { border-color: var(--forest); }
+  .appbar .ttl { font-weight: 700; font-size: 1.0625rem; }
+  .appbar .avatar { margin-left: auto; width: 34px; height: 34px; border-radius: 50%; background: var(--forest); color: var(--lime); display: grid; place-items: center; font-weight: 700; font-size: 0.8125rem; cursor: pointer; }
+  .pad { padding: 0 var(--space-lg) var(--space-lg); }
+  .scrollarea { flex: 1; overflow-y: auto; }
+  .scrollarea::-webkit-scrollbar { width: 0; }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
+  .kv { display: flex; align-items: center; justify-content: space-between; padding: var(--space-md) 0; border-bottom: 1px solid var(--line); font-size: 0.9375rem; }
+  .kv:last-child { border-bottom: none; }
+  .kv .k { color: var(--muted); font-weight: 600; }
+  .kv .v { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kv .v.free { color: var(--good); }
+  .kv .v.hash { color: var(--info); display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+  .chip.pending { background: var(--warn-bg); color: oklch(48% 0.13 75); }
+  .chip.done { background: var(--good-bg); color: var(--good); }
+  .chip.danger { background: var(--danger-bg); color: var(--danger); }
+  .pill { display: inline-flex; align-items: center; gap: var(--space-sm); background: var(--cream); border: 1px solid var(--line-strong); border-radius: 999px; padding: 6px 12px; font-weight: 700; font-size: 0.875rem; white-space: nowrap; }
+  .leg-label { font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
+  .section-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin: var(--space-lg) 0 var(--space-sm); }
+
+  /* ===== LANDING ===== */
+  nav { position: sticky; top: 0; z-index: 50; background: oklch(97.5% 0.018 95 / 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  .nav-inner { max-width: 1160px; margin: 0 auto; padding: var(--space-md) var(--space-xl); display: flex; align-items: center; gap: var(--space-xl); }
+  .brand { display: flex; align-items: center; gap: var(--space-sm); font-weight: 800; font-size: 1.125rem; letter-spacing: -0.03em; }
+  .brand .mark { width: 32px; height: 32px; background: var(--lime); border-radius: 9px; display: grid; place-items: center; color: var(--forest); }
+  .nav-links { display: flex; gap: var(--space-xl); margin-left: auto; list-style: none; }
+  .nav-links a { color: var(--forest-soft); font-weight: 600; font-size: 0.9375rem; cursor: pointer; transition: color 140ms var(--ease-out-quint); }
+  .nav-links a:hover { color: var(--forest); }
+  .nav-cta { display: flex; align-items: center; gap: var(--space-sm); }
+  .nbtn { font-family: inherit; font-weight: 700; font-size: 0.9375rem; border-radius: 999px; padding: var(--space-sm) var(--space-lg); cursor: pointer; border: none; display: inline-flex; align-items: center; gap: var(--space-sm); transition: transform 120ms var(--ease-out-quint), background 120ms var(--ease-out-quint); }
+  .nbtn-lime { background: var(--lime); color: var(--forest); }
+  .nbtn-lime:hover { background: oklch(89% 0.19 128); }
+  .nbtn-ghost { background: transparent; color: var(--forest); }
+  .nbtn-ghost:hover { background: oklch(93% 0.02 128); }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 var(--space-xl); }
+  .eyebrow { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--forest-soft); }
+  .hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: var(--space-4xl); align-items: center; padding: var(--space-5xl) 0 var(--space-4xl); }
+  .hero-copy h1 { font-size: clamp(2.5rem, 5.5vw, 4rem); font-weight: 800; }
+  .hero-copy h1 .accent { background: var(--lime); padding: 0 0.15em; border-radius: 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+  .hero-copy p.lead { font-size: 1.1875rem; color: var(--forest-soft); font-weight: 500; margin-top: var(--space-xl); max-width: 30ch; }
+  .hero-actions { display: flex; gap: var(--space-md); margin-top: var(--space-2xl); flex-wrap: wrap; }
+  .nbtn-lg { padding: var(--space-md) var(--space-xl); font-size: 1.0625rem; }
+  .hero-trust { display: flex; align-items: center; gap: var(--space-lg); margin-top: var(--space-2xl); font-size: 0.875rem; color: var(--muted); font-weight: 600; flex-wrap: wrap; }
+  .hero-trust .item { display: flex; align-items: center; gap: 6px; }
+  .hero-trust .item i { color: var(--good); }
+  .hero-visual { position: relative; display: flex; justify-content: center; }
+  .lcard { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-xl); box-shadow: 0 24px 60px -30px oklch(27% 0.055 155 / 0.35); overflow: hidden; }
+  .leg { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--space-md); padding: var(--space-xl); }
+  .amount { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; border: none; background: none; outline: none; width: 100%; color: var(--ink); font-family: inherit; padding: 0; }
+  .amount:focus-visible { color: var(--forest); }
+  .amount .cur { color: var(--muted); font-weight: 600; }
+  .rail { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: var(--space-md) var(--space-xl); background: oklch(98.5% 0.012 128); display: flex; flex-direction: column; gap: var(--space-sm); }
+  .rail-row { display: flex; align-items: center; gap: var(--space-md); font-size: 0.8125rem; font-weight: 600; color: var(--forest-soft); }
+  .rail-row .ico { width: 22px; height: 22px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); display: grid; place-items: center; color: var(--forest); flex-shrink: 0; }
+  .rail-row .val { margin-left: auto; color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .rail-row .val.free { color: var(--good); }
+  .lcard-cta { margin: var(--space-lg) var(--space-xl) var(--space-xl); width: calc(100% - var(--space-xl) * 2); background: var(--lime); color: var(--forest); border: none; border-radius: 999px; padding: var(--space-md); font-weight: 800; font-size: 1rem; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: var(--space-sm); transition: transform 120ms var(--ease-out-quint), background 120ms var(--ease-out-quint); }
+  .lcard-cta:hover { background: oklch(89% 0.19 128); }
+  .lcard-cta:active { transform: scale(0.98); }
+  .float-badge { position: absolute; top: -14px; right: -6px; background: var(--forest); color: var(--lime); font-size: 0.75rem; font-weight: 700; padding: var(--space-sm) var(--space-md); border-radius: 999px; display: flex; align-items: center; gap: 6px; box-shadow: 0 8px 24px -8px oklch(27% 0.055 155 / 0.5); }
+  .strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--surface); }
+  .strip-inner { max-width: 1160px; margin: 0 auto; padding: var(--space-xl); display: flex; align-items: center; justify-content: space-between; gap: var(--space-xl); flex-wrap: wrap; }
+  .strip-item .n { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .strip-item .l { font-size: 0.8125rem; color: var(--muted); font-weight: 600; }
+  section.block { padding: var(--space-5xl) 0; }
+  .section-head { max-width: 44ch; margin-bottom: var(--space-3xl); }
+  .section-head h2 { font-size: clamp(1.875rem, 3.5vw, 2.75rem); font-weight: 800; margin-top: var(--space-md); }
+  .section-head p { color: var(--forest-soft); font-size: 1.0625rem; font-weight: 500; margin-top: var(--space-md); }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xl); }
+  .step .num { width: 44px; height: 44px; background: var(--forest); color: var(--lime); border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 1.125rem; margin-bottom: var(--space-lg); }
+  .step h3 { font-size: 1.25rem; font-weight: 700; }
+  .step p { color: var(--forest-soft); font-size: 0.9375rem; font-weight: 500; margin-top: var(--space-sm); max-width: 32ch; }
+  .compare { background: var(--forest); color: oklch(96% 0.02 128); border-radius: var(--r-xl); padding: var(--space-4xl); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4xl); align-items: center; }
+  .compare h2 { font-size: clamp(1.875rem, 3.5vw, 2.5rem); font-weight: 800; color: oklch(97% 0.02 128); }
+  .compare .lead { color: var(--muted-on-dark); font-weight: 500; margin-top: var(--space-lg); font-size: 1.0625rem; }
+  .crow { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: var(--space-lg); padding: var(--space-lg) 0; border-bottom: 1px solid oklch(40% 0.04 155); }
+  .crow:last-child { border-bottom: none; }
+  .crow .label { font-weight: 600; font-size: 0.9375rem; color: var(--muted-on-dark); }
+  .crow .old { text-align: right; font-weight: 600; color: oklch(70% 0.05 30); text-decoration: line-through; font-variant-numeric: tabular-nums; font-size: 0.9375rem; }
+  .crow .new { text-align: right; font-weight: 800; color: var(--lime); font-variant-numeric: tabular-nums; min-width: 6ch; }
+  .features { display: grid; grid-template-columns: 1.4fr 1fr 1fr; grid-auto-rows: 1fr; gap: var(--space-lg); }
+  .feat { border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--space-2xl); background: var(--surface); display: flex; flex-direction: column; }
+  .feat.wide { grid-column: span 2; background: var(--lime); border-color: transparent; }
+  .feat .fico { width: 40px; height: 40px; border-radius: 11px; background: var(--cream); border: 1px solid var(--line); display: grid; place-items: center; color: var(--forest); margin-bottom: var(--space-lg); }
+  .feat.wide .fico { background: var(--forest); color: var(--lime); border-color: transparent; }
+  .feat h3 { font-size: 1.1875rem; font-weight: 700; }
+  .feat.wide h3 { font-size: 1.5rem; }
+  .feat p { color: var(--forest-soft); font-size: 0.9375rem; font-weight: 500; margin-top: var(--space-sm); }
+  .feat.wide p { color: var(--forest); max-width: 40ch; }
+  .cta-band { text-align: center; padding: var(--space-5xl) 0; }
+  .cta-band h2 { font-size: clamp(2rem, 4.5vw, 3.25rem); font-weight: 800; max-width: 18ch; margin: 0 auto; }
+  .cta-band p { color: var(--forest-soft); font-size: 1.125rem; font-weight: 500; margin-top: var(--space-lg); }
+  .cta-band .hero-actions { justify-content: center; margin-top: var(--space-2xl); }
+  footer { border-top: 1px solid var(--line); padding: var(--space-3xl) 0; }
+  .foot-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); flex-wrap: wrap; }
+  .foot-inner .fnote { color: var(--muted); font-size: 0.8125rem; font-weight: 500; }
+  .foot-links { display: flex; gap: var(--space-xl); list-style: none; }
+  .foot-links a { color: var(--forest-soft); font-weight: 600; font-size: 0.875rem; cursor: pointer; }
+  .foot-links a:hover { color: var(--forest); }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; gap: var(--space-3xl); padding: var(--space-4xl) 0 var(--space-3xl); } .hero-copy p.lead { max-width: none; } .compare { grid-template-columns: 1fr; padding: var(--space-2xl); gap: var(--space-2xl); } .steps { grid-template-columns: 1fr; gap: var(--space-2xl); } .features { grid-template-columns: 1fr 1fr; } .feat.wide { grid-column: span 2; } .float-badge { right: 12px; } }
+  @media (max-width: 800px) { .nav-links { display: none; } }
+  @media (max-width: 620px) { .features { grid-template-columns: 1fr; } .feat.wide { grid-column: span 1; } }
+
+  /* ===== AUTH (login/register) ===== */
+  .auth-layout { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .auth-panel { background: var(--forest); color: oklch(96% 0.02 128); padding: var(--space-4xl) var(--space-3xl); display: flex; flex-direction: column; position: relative; overflow: hidden; }
+  .auth-panel::after { content: ""; position: absolute; width: 460px; height: 460px; background: radial-gradient(circle, oklch(87% 0.185 128 / 0.14), transparent 70%); bottom: -160px; left: -120px; border-radius: 50%; }
+  .auth-panel.reg::after { top: -160px; right: -140px; bottom: auto; left: auto; }
+  .auth-panel .brand { position: relative; z-index: 1; }
+  .auth-panel .brand .mark { color: var(--forest); }
+  .panel-body { margin-top: auto; position: relative; z-index: 1; }
+  .panel-body h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 800; color: oklch(97% 0.02 128); max-width: 16ch; }
+  .panel-body h2 .hl { color: var(--lime); }
+  .panel-quote { margin-top: var(--space-2xl); padding-top: var(--space-2xl); border-top: 1px solid oklch(40% 0.04 155); max-width: 40ch; }
+  .panel-quote p { color: var(--muted-on-dark); font-weight: 500; font-size: 1.0625rem; }
+  .panel-quote .who { margin-top: var(--space-md); display: flex; align-items: center; gap: var(--space-md); }
+  .panel-quote .who .a { width: 38px; height: 38px; border-radius: 50%; background: var(--lime); color: var(--forest); display: grid; place-items: center; font-weight: 800; font-size: 0.8125rem; }
+  .panel-quote .who .n { font-weight: 700; font-size: 0.875rem; color: oklch(94% 0.02 128); }
+  .panel-quote .who .r { font-size: 0.8125rem; color: var(--muted-on-dark); font-weight: 500; }
+  .benefits { list-style: none; margin-top: var(--space-2xl); display: flex; flex-direction: column; gap: var(--space-lg); }
+  .benefits li { display: flex; align-items: flex-start; gap: var(--space-md); font-weight: 500; color: var(--muted-on-dark); font-size: 1rem; max-width: 38ch; }
+  .benefits li .cico { width: 26px; height: 26px; border-radius: 8px; background: oklch(40% 0.04 155); color: var(--lime); display: grid; place-items: center; flex-shrink: 0; margin-top: 2px; }
+  .benefits li b { color: oklch(95% 0.02 128); font-weight: 700; }
+  .form-side { display: flex; align-items: center; justify-content: center; padding: var(--space-4xl) var(--space-3xl); }
+  .form-card { width: 100%; max-width: 400px; }
+  .form-card .top-link { font-size: 0.875rem; font-weight: 600; color: var(--muted); text-align: right; margin-bottom: var(--space-3xl); }
+  .form-card .top-link a { color: var(--forest); font-weight: 700; cursor: pointer; }
+  .form-card .top-link a:hover { text-decoration: underline; }
+  .form-card h1 { font-size: 2rem; font-weight: 800; }
+  .form-card .sub { color: var(--muted); font-weight: 500; margin-top: var(--space-sm); font-size: 0.9375rem; }
+  form.authform { margin-top: var(--space-2xl); display: flex; flex-direction: column; gap: var(--space-lg); }
+  .field { display: flex; flex-direction: column; gap: var(--space-sm); }
+  .field label { font-size: 0.8125rem; font-weight: 700; color: var(--forest-soft); }
+  .input-wrap { position: relative; display: flex; align-items: center; }
+  .input-wrap > i { position: absolute; left: var(--space-md); color: var(--muted); pointer-events: none; }
+  .input-wrap input { width: 100%; font-family: inherit; font-size: 0.9375rem; font-weight: 500; color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--r-md); padding: var(--space-md) var(--space-md) var(--space-md) 42px; outline: none; transition: border-color 140ms var(--ease-out-quint), box-shadow 140ms var(--ease-out-quint); }
+  .input-wrap input::placeholder { color: oklch(70% 0.015 155); font-weight: 500; }
+  .input-wrap input:focus-visible { border-color: var(--forest); box-shadow: 0 0 0 3px oklch(87% 0.185 128 / 0.45); }
+  .input-wrap .toggle { position: absolute; right: var(--space-sm); background: none; border: none; cursor: pointer; color: var(--muted); padding: var(--space-sm); display: grid; place-items: center; border-radius: 8px; }
+  .input-wrap .toggle:hover { color: var(--forest); background: var(--cream); }
+  .row-between { display: flex; align-items: center; justify-content: space-between; }
+  .check { display: flex; align-items: center; gap: var(--space-sm); font-size: 0.875rem; font-weight: 600; color: var(--forest-soft); cursor: pointer; user-select: none; }
+  .check.start { align-items: flex-start; font-size: 0.8125rem; font-weight: 500; line-height: 1.5; }
+  .check input { width: 17px; height: 17px; accent-color: var(--forest); cursor: pointer; flex-shrink: 0; }
+  .check.start input { margin-top: 2px; }
+  .check a { color: var(--forest); font-weight: 700; cursor: pointer; }
+  .forgot { font-size: 0.875rem; font-weight: 700; color: var(--forest); cursor: pointer; }
+  .forgot:hover { text-decoration: underline; }
+  .divider { display: flex; align-items: center; gap: var(--space-md); color: var(--muted); font-size: 0.8125rem; font-weight: 600; margin: var(--space-sm) 0; }
+  .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .wallet-btn { width: 100%; font-family: inherit; font-weight: 700; font-size: 0.9375rem; background: var(--surface); color: var(--ink); border: 1px solid var(--line-strong); border-radius: var(--r-md); padding: var(--space-md); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: var(--space-md); transition: border-color 140ms var(--ease-out-quint), background 140ms var(--ease-out-quint); }
+  .wallet-btn:hover { border-color: var(--forest); background: oklch(97% 0.014 128); }
+  .wallet-btn .wico { width: 24px; height: 24px; border-radius: 7px; background: var(--info); display: grid; place-items: center; color: white; font-weight: 800; font-size: 0.75rem; flex-shrink: 0; }
+  .strength { display: flex; flex-direction: column; gap: 6px; }
+  .bars { display: flex; gap: 6px; }
+  .bars span { height: 4px; flex: 1; background: var(--line-strong); border-radius: 999px; transition: background 200ms var(--ease-out-quint); }
+  .bars.s1 span:nth-child(1) { background: var(--danger); }
+  .bars.s2 span:nth-child(-n+2) { background: var(--warn); }
+  .bars.s3 span:nth-child(-n+3) { background: oklch(70% 0.15 128); }
+  .bars.s4 span { background: var(--good); }
+  .strength .txt { font-size: 0.75rem; font-weight: 600; color: var(--muted); }
+  .foot-note { text-align: center; font-size: 0.8125rem; color: var(--muted); font-weight: 500; margin-top: var(--space-xl); }
+  .foot-note a { color: var(--forest); font-weight: 700; cursor: pointer; }
+  @media (max-width: 900px) { .auth-layout { grid-template-columns: 1fr; } .auth-panel { display: none; } .form-side { padding: var(--space-2xl) var(--space-xl); min-height: 100vh; } .form-card .top-link { text-align: center; } }
+
+  /* ===== HOME ===== */
+  .balance-hero { background: var(--forest); color: oklch(96% 0.02 128); padding: var(--space-xl); border-radius: var(--r-lg); position: relative; overflow: hidden; }
+  .balance-hero::after { content:""; position:absolute; width:200px; height:200px; background: radial-gradient(circle, oklch(87% 0.185 128 / 0.16), transparent 70%); top:-80px; right:-60px; border-radius:50%; }
+  .balance-hero .lbl { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-on-dark); position: relative; }
+  .balance-hero .amt { font-size: 2.375rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; margin-top: 6px; position: relative; }
+  .balance-hero .amt .cur { color: var(--lime); font-size: 1.25rem; font-weight: 700; margin-left: 6px; }
+  .balance-hero .sub { font-size: 0.8125rem; color: var(--muted-on-dark); font-weight: 600; margin-top: 4px; position: relative; }
+  .quick { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-top: var(--space-lg); }
+  .quick button { font-family: inherit; cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: var(--space-lg); display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-sm); transition: border-color 140ms var(--ease-out-quint); }
+  .quick button:hover { border-color: var(--forest); }
+  .quick .qi { width: 36px; height: 36px; border-radius: 10px; background: var(--lime); color: var(--forest); display: grid; place-items: center; }
+  .quick .qi.alt { background: var(--cream); color: var(--forest); border: 1px solid var(--line); }
+  .quick .qt { font-weight: 700; font-size: 0.9375rem; }
+  .sec-head { display: flex; align-items: center; justify-content: space-between; margin: var(--space-xl) 0 var(--space-md); }
+  .sec-head h3 { font-size: 1.0625rem; font-weight: 700; }
+  .sec-head a { font-size: 0.8125rem; font-weight: 700; color: var(--forest); cursor: pointer; }
+  .tx-item { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md) 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .tx-item:last-child { border-bottom: none; }
+  .tx-item .tavatar { width: 40px; height: 40px; border-radius: 50%; background: var(--lime); color: var(--forest); display: grid; place-items: center; font-weight: 800; font-size: 0.8125rem; flex-shrink: 0; }
+  .tx-item .tinfo .tn { font-weight: 700; font-size: 0.9375rem; }
+  .tx-item .tinfo .td { font-size: 0.8125rem; color: var(--muted); font-weight: 500; }
+  .tx-item .tright { margin-left: auto; text-align: right; }
+  .tx-item .tright .ta { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 0.9375rem; }
+  .tx-item .tright .ts { font-size: 0.75rem; font-weight: 700; }
+  .ts.done { color: var(--good); }
+  .ts.pending { color: oklch(55% 0.13 75); }
+  .ts.refund { color: var(--muted); }
+  .bottomnav { display: flex; border-top: 1px solid var(--line); background: var(--surface); padding: var(--space-sm) var(--space-sm) var(--space-md); flex-shrink: 0; }
+  .bottomnav button { flex: 1; background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: var(--space-sm); color: var(--muted); font-family: inherit; font-size: 0.6875rem; font-weight: 700; }
+  .bottomnav button.active { color: var(--forest); }
+  .fab { background: var(--lime) !important; color: var(--forest); border-radius: 50% !important; width: 46px; height: 46px; margin-top: -18px; box-shadow: 0 8px 20px -6px oklch(87% 0.185 128 / 0.7); }
+
+  /* ===== SEND ===== */
+  .recipient-row { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); margin-top: var(--space-lg); cursor: pointer; }
+  .recipient-row:hover { border-color: var(--forest); }
+  .recipient-row .r-av { width: 40px; height: 40px; border-radius: 50%; background: var(--lime); color: var(--forest); display: grid; place-items: center; font-weight: 800; flex-shrink: 0; }
+  .recipient-row .r-n { font-weight: 700; font-size: 0.9375rem; }
+  .recipient-row .r-s { font-size: 0.8125rem; color: var(--muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .recipient-row .r-chev { margin-left: auto; color: var(--muted); }
+
+  /* ===== REVIEW ===== */
+  .review-amt { text-align: center; padding: var(--space-xl) 0 var(--space-lg); }
+  .review-amt .big { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .review-amt .small { color: var(--muted); font-weight: 600; margin-top: 4px; }
+  .note-box { display: flex; gap: var(--space-md); background: var(--good-bg); border-radius: var(--r-md); padding: var(--space-md); margin-top: var(--space-lg); font-size: 0.8125rem; font-weight: 600; color: var(--good); }
+  .note-box i { flex-shrink: 0; margin-top: 2px; }
+
+  /* ===== SIGN ===== */
+  .sign-sheet { text-align: center; padding: var(--space-2xl) var(--space-lg); flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .sign-sheet .wlogo { width: 64px; height: 64px; border-radius: 18px; background: var(--info); color: white; display: grid; place-items: center; font-weight: 800; font-size: 1.5rem; margin: 0 auto var(--space-lg); }
+  .sign-sheet h3 { font-size: 1.25rem; font-weight: 800; }
+  .sign-sheet p { color: var(--muted); font-weight: 500; margin-top: var(--space-sm); font-size: 0.9375rem; }
+  .spinner { width: 18px; height: 18px; border: 3px solid oklch(27% 0.055 155 / 0.2); border-top-color: currentColor; border-radius: 50%; animation: spin 700ms linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== SUCCESS ===== */
+  .success-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: var(--space-2xl) var(--space-lg); }
+  .success-badge { width: 96px; height: 96px; border-radius: 50%; background: var(--lime); display: grid; place-items: center; color: var(--forest); margin-bottom: var(--space-xl); animation: pop 500ms var(--ease-out-expo); }
+  @keyframes pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .success-wrap h2 { font-size: 1.75rem; font-weight: 800; }
+  .success-wrap .big-amt { font-size: 1.125rem; font-weight: 700; color: var(--forest-soft); margin-top: var(--space-sm); font-variant-numeric: tabular-nums; }
+  .receipt { width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--space-lg); margin-top: var(--space-xl); text-align: left; }
+
+  /* ===== TRACKING ===== */
+  .track-hero { text-align: center; padding: var(--space-lg) 0 var(--space-xl); }
+  .track-hero .amt { font-size: 2rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; }
+  .track-hero .to { color: var(--muted); font-weight: 600; margin-top: 4px; font-size: 0.9375rem; }
+  .timeline { position: relative; padding-left: 36px; }
+  .timeline::before { content: ""; position: absolute; left: 15px; top: 8px; bottom: 8px; width: 2px; background: var(--line-strong); }
+  .tl-step { position: relative; padding-bottom: var(--space-xl); }
+  .tl-step:last-child { padding-bottom: 0; }
+  .tl-step .node { position: absolute; left: -36px; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 2px solid var(--line-strong); color: var(--muted); z-index: 1; }
+  .tl-step.done .node { background: var(--good); border-color: var(--good); color: white; }
+  .tl-step.active .node { background: var(--lime); border-color: var(--lime); color: var(--forest); }
+  .tl-step.active .node .pulse { position: absolute; inset: -2px; border-radius: 50%; border: 2px solid var(--lime); animation: pulse 1.6s var(--ease-out-quint) infinite; }
+  @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.8); opacity: 0; } }
+  .tl-step .st-t { font-weight: 700; font-size: 0.9375rem; }
+  .tl-step.pending-step .st-t { color: var(--muted); }
+  .tl-step .st-d { font-size: 0.8125rem; color: var(--muted); font-weight: 500; margin-top: 2px; }
+  .tl-step .st-hash { font-size: 0.75rem; color: var(--info); font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 6px; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+  .tl-step .st-hash:hover { text-decoration: underline; }
+  .explorer-link { display: flex; align-items: center; justify-content: center; gap: var(--space-sm); margin-top: var(--space-lg); padding: var(--space-md); border: 1px solid var(--line-strong); border-radius: var(--r-md); font-size: 0.875rem; font-weight: 700; color: var(--forest); cursor: pointer; background: var(--surface); }
+  .explorer-link:hover { border-color: var(--forest); }
+
+  /* ===== CLAIM ===== */
+  .claim-top { background: var(--forest); color: oklch(96% 0.02 128); text-align: center; padding: var(--space-2xl) var(--space-lg) var(--space-xl); }
+  .claim-top .from-av { width: 56px; height: 56px; border-radius: 50%; background: var(--lime); color: var(--forest); display: grid; place-items: center; font-weight: 800; font-size: 1.125rem; margin: 0 auto var(--space-md); }
+  .claim-top .from-n { font-size: 0.8125rem; color: var(--muted-on-dark); font-weight: 600; }
+  .claim-top .claim-amt { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; margin-top: 6px; }
+  .claim-top .claim-cur { color: var(--lime); font-size: 1rem; font-weight: 700; }
+  .claim-info { display: flex; gap: var(--space-md); background: var(--good-bg); border-radius: var(--r-md); padding: var(--space-md); font-size: 0.8125rem; font-weight: 600; color: var(--good); margin-bottom: var(--space-lg); }
+  .claim-info i { flex-shrink: 0; margin-top: 2px; }
+
+  /* ===== HISTORY ===== */
+  .filter-row { display: flex; gap: var(--space-sm); padding: 0 var(--space-lg) var(--space-lg); overflow-x: auto; flex-shrink: 0; }
+  .filter-row::-webkit-scrollbar { height: 0; }
+  .fchip { font-family: inherit; white-space: nowrap; font-size: 0.8125rem; font-weight: 700; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--forest-soft); cursor: pointer; transition: all 140ms var(--ease-out-quint); }
+  .fchip.active { background: var(--forest); color: var(--lime); border-color: var(--forest); }
+  .date-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: var(--space-md) 0 var(--space-sm); }
+
+  /* ===== RECIPIENTS ===== */
+  .rec-item { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); margin-bottom: var(--space-md); cursor: pointer; }
+  .rec-item:hover { border-color: var(--forest); }
+  .rec-item .rav { width: 44px; height: 44px; border-radius: 50%; background: var(--lime); color: var(--forest); display: grid; place-items: center; font-weight: 800; flex-shrink: 0; }
+  .rec-item .redit { margin-left: auto; color: var(--muted); }
+  .add-rec { display: flex; align-items: center; justify-content: center; gap: var(--space-sm); width: 100%; padding: var(--space-md); border: 2px dashed var(--line-strong); border-radius: var(--r-md); background: none; color: var(--forest); font-family: inherit; font-weight: 700; font-size: 0.9375rem; cursor: pointer; }
+  .add-rec:hover { border-color: var(--forest); background: oklch(97% 0.014 128); }
+
+  /* ===== DETAIL ===== */
+  .detail-hero { text-align: center; padding: var(--space-lg) 0 var(--space-xl); }
+  .detail-hero .av { width: 60px; height: 60px; border-radius: 50%; background: var(--lime); color: var(--forest); display: grid; place-items: center; font-weight: 800; font-size: 1.25rem; margin: 0 auto var(--space-md); }
+  .detail-hero .amt { font-size: 2.125rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; }
+  .detail-hero .sub { color: var(--muted); font-weight: 600; margin-top: 4px; }
+
+  /* ===== PROFILE ===== */
+  .profile-head { display: flex; flex-direction: column; align-items: center; text-align: center; padding: var(--space-lg) 0 var(--space-xl); }
+  .profile-head .pav { width: 84px; height: 84px; border-radius: 50%; background: var(--forest); color: var(--lime); display: grid; place-items: center; font-weight: 800; font-size: 2rem; }
+  .profile-head .pn { font-size: 1.375rem; font-weight: 800; margin-top: var(--space-md); }
+  .profile-head .pe { color: var(--muted); font-weight: 500; font-size: 0.875rem; }
+  .profile-head .wallet-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: var(--space-md); background: var(--surface); border: 1px solid var(--line-strong); padding: 6px 12px; border-radius: 999px; font-size: 0.8125rem; font-weight: 700; color: var(--forest-soft); font-variant-numeric: tabular-nums; }
+  .settings-group { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; margin-bottom: var(--space-lg); }
+  .set-row { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md) var(--space-lg); border-bottom: 1px solid var(--line); cursor: pointer; }
+  .set-row:last-child { border-bottom: none; }
+  .set-row:hover { background: oklch(97% 0.014 128); }
+  .set-row .sico { width: 34px; height: 34px; border-radius: 10px; background: var(--cream); border: 1px solid var(--line); display: grid; place-items: center; color: var(--forest); flex-shrink: 0; }
+  .set-row .sico.danger { background: var(--danger-bg); border-color: transparent; color: var(--danger); }
+  .set-row .st { font-weight: 700; font-size: 0.9375rem; }
+  .set-row .st.danger { color: var(--danger); }
+  .set-row .sd { font-size: 0.8125rem; color: var(--muted); font-weight: 500; }
+  .set-row .chev { margin-left: auto; color: var(--muted); }
+  .toggle-sw { margin-left: auto; width: 44px; height: 26px; border-radius: 999px; background: var(--forest); position: relative; cursor: pointer; transition: background 200ms var(--ease-out-quint); flex-shrink: 0; }
+  .toggle-sw::after { content: ""; position: absolute; top: 3px; left: 21px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: left 200ms var(--ease-out-quint); }
+  .toggle-sw.off { background: var(--line-strong); }
+  .toggle-sw.off::after { left: 3px; }
+
+  /* ===== ONBOARDING ===== */
+  .onb { flex: 1; display: flex; flex-direction: column; }
+  .onb-visual { flex: 1; display: flex; align-items: center; justify-content: center; background: var(--forest); position: relative; overflow: hidden; }
+  .onb-visual::after { content: ""; position: absolute; width: 340px; height: 340px; background: radial-gradient(circle, oklch(87% 0.185 128 / 0.18), transparent 70%); border-radius: 50%; }
+  .onb-art { position: relative; z-index: 1; width: 130px; height: 130px; border-radius: 36px; background: var(--lime); color: var(--forest); display: grid; place-items: center; box-shadow: 0 20px 50px -16px oklch(87% 0.185 128 / 0.6); }
+  .onb-body { padding: var(--space-2xl) var(--space-xl) var(--space-xl); text-align: center; }
+  .onb-body h2 { font-size: 1.625rem; font-weight: 800; }
+  .onb-body p { color: var(--muted); font-weight: 500; margin-top: var(--space-md); font-size: 0.9375rem; max-width: 32ch; margin-left: auto; margin-right: auto; }
+  .dots-row { display: flex; gap: 8px; justify-content: center; margin: var(--space-xl) 0; }
+  .dots-row span { width: 8px; height: 8px; border-radius: 999px; background: var(--line-strong); transition: width 200ms var(--ease-out-quint); }
+  .dots-row span.active { width: 24px; background: var(--forest); }
+  .onb-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); }
+  .onb-skip { background: none; border: none; font-family: inherit; font-weight: 700; color: var(--muted); cursor: pointer; font-size: 0.9375rem; padding: var(--space-md); }
+  .onb-skip:hover { color: var(--forest); }
+
+  /* ===== TOPUP ===== */
+  .method { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); margin-bottom: var(--space-md); cursor: pointer; transition: border-color 140ms var(--ease-out-quint); }
+  .method:hover { border-color: var(--forest); }
+  .method.sel { border-color: var(--forest); box-shadow: 0 0 0 3px oklch(87% 0.185 128 / 0.4); }
+  .method .mico { width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; flex-shrink: 0; color: #fff; font-weight: 800; }
+  .method .mn { font-weight: 700; font-size: 0.9375rem; }
+  .method .md { font-size: 0.8125rem; color: var(--muted); font-weight: 500; }
+  .method .mradio { margin-left: auto; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--line-strong); position: relative; flex-shrink: 0; }
+  .method.sel .mradio { border-color: var(--forest); }
+  .method.sel .mradio::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--forest); }
+  .amount-in { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--space-md); padding: var(--space-lg); }
+  .amount-in input { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; border: none; background: none; outline: none; width: 100%; color: var(--ink); font-family: inherit; }
+  .amount-in input:focus-visible { color: var(--forest); }
+  .quick-amts { display: flex; gap: var(--space-sm); margin-top: var(--space-md); }
+  .quick-amts button { flex: 1; font-family: inherit; font-weight: 700; font-size: 0.875rem; padding: var(--space-sm); border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--forest-soft); cursor: pointer; }
+  .quick-amts button:hover { border-color: var(--forest); color: var(--forest); }
+
+  /* ===== STATES ===== */
+  .state-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: var(--space-2xl) var(--space-lg); }
+  .state-ico { width: 72px; height: 72px; border-radius: 20px; display: grid; place-items: center; margin-bottom: var(--space-lg); }
+  .state-ico.neutral { background: var(--cream); border: 1px solid var(--line); color: var(--forest-soft); }
+  .state-ico.warn { background: var(--warn-bg); color: oklch(50% 0.13 75); }
+  .state-ico.danger { background: var(--danger-bg); color: var(--danger); }
+  .state-wrap h3 { font-size: 1.25rem; font-weight: 800; }
+  .state-wrap p { color: var(--muted); font-weight: 500; margin-top: var(--space-sm); font-size: 0.9375rem; max-width: 30ch; }
+  .sk { background: linear-gradient(90deg, var(--line) 25%, oklch(93% 0.012 128) 50%, var(--line) 75%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; border-radius: 8px; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+  .sk-row { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md) 0; }
+  .sk-circle { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ===== FLOW GUIDE BAR ===== */
+  .guide { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--forest); color: oklch(96% 0.02 128); padding: var(--space-sm) var(--space-lg); display: flex; align-items: center; gap: var(--space-md); font-size: 0.8125rem; font-weight: 600; }
+  .guide .g-label { display: flex; align-items: center; gap: 6px; color: var(--lime); font-weight: 800; white-space: nowrap; }
+  .guide .g-steps { display: flex; gap: 6px; overflow-x: auto; flex: 1; }
+  .guide .g-steps::-webkit-scrollbar { height: 0; }
+  .guide .g-step { white-space: nowrap; padding: 3px 10px; border-radius: 999px; background: oklch(40% 0.04 155); cursor: pointer; transition: background 140ms var(--ease-out-quint); font-weight: 700; }
+  .guide .g-step:hover { background: oklch(46% 0.05 155); }
+  .guide .g-step.cur { background: var(--lime); color: var(--forest); }
+  .guide .g-close { background: none; border: none; color: var(--muted-on-dark); cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.75rem; }
+  .guide.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================= LANDING ============================================================= -->
+<div class="view active" id="v-landing">
+  <nav>
+    <div class="nav-inner">
+      <div class="brand"><span class="mark"><i data-lucide="send-horizontal" width="17" height="17"></i></span> KirimStellar</div>
+      <ul class="nav-links">
+        <li><a onclick="scrollToId('l-cara')">Cara kerja</a></li>
+        <li><a onclick="scrollToId('l-hemat')">Biaya</a></li>
+        <li><a onclick="scrollToId('l-fitur')">Fitur</a></li>
+      </ul>
+      <div class="nav-cta">
+        <button class="nbtn nbtn-ghost" onclick="show('v-login')">Masuk</button>
+        <button class="nbtn nbtn-lime" onclick="show('v-register')">Kirim uang</button>
+      </div>
+    </div>
+  </nav>
+  <header class="wrap">
+    <div class="hero">
+      <div class="hero-copy">
+        <h1>Kirim uang ke rumah dalam <span class="accent">hitungan detik</span></h1>
+        <p class="lead">Untuk pekerja Indonesia di luar negeri. Biaya nyaris nol, kurs jujur, uang sampai sebelum kamu sempat tutup aplikasi.</p>
+        <div class="hero-actions">
+          <button class="nbtn nbtn-lime nbtn-lg" onclick="show('v-register')">Mulai kirim <i data-lucide="arrow-right" width="18" height="18"></i></button>
+          <button class="nbtn nbtn-ghost nbtn-lg" onclick="scrollToId('l-cara')">Lihat caranya</button>
+        </div>
+        <div class="hero-trust">
+          <span class="item"><i data-lucide="zap" width="15" height="15"></i> Tiba ~5 detik</span>
+          <span class="item"><i data-lucide="badge-percent" width="15" height="15"></i> Biaya &lt; 0,1%</span>
+          <span class="item"><i data-lucide="shield-check" width="15" height="15"></i> Escrow on-chain</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="lcard">
+          <div class="float-badge"><i data-lucide="zap" width="12" height="12"></i> Tiba ~5 detik</div>
+          <div class="leg">
+            <div><div class="leg-label">Kamu kirim</div><input class="amount" id="lSend" value="200.00" inputmode="decimal" aria-label="Jumlah kirim USDC"></div>
+            <span class="pill"><span class="flag usdc">$</span> USDC</span>
+          </div>
+          <div class="rail">
+            <div class="rail-row"><span class="ico"><i data-lucide="zap" width="13" height="13"></i></span> Biaya jaringan <span class="val free">$0.02</span></div>
+            <div class="rail-row"><span class="ico"><i data-lucide="repeat" width="13" height="13"></i></span> Kurs mid-market <span class="val">16.284</span></div>
+          </div>
+          <div class="leg">
+            <div><div class="leg-label">Mereka terima</div><div class="amount"><span id="lRecv">3.256.443</span> <span class="cur">IDR</span></div></div>
+            <span class="pill"><span class="flag idr"></span> IDR</span>
+          </div>
+          <button class="lcard-cta" onclick="show('v-register')">Kirim sekarang <i data-lucide="arrow-right" width="17" height="17"></i></button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="strip">
+    <div class="strip-inner">
+      <div class="strip-item"><span class="n">$9,7 M</span><span class="l">dikirim TKI tiap tahun</span></div>
+      <div class="strip-item"><span class="n">&lt; 0,1%</span><span class="l">biaya, bukan 5-7%</span></div>
+      <div class="strip-item"><span class="n">~5 dtk</span><span class="l">tiba, bukan 2-3 hari</span></div>
+      <div class="strip-item"><span class="n">1:1</span><span class="l">IDRT dijamin Rupiah</span></div>
+    </div>
+  </div>
+  <section class="block wrap" id="l-cara">
+    <div class="section-head"><span class="eyebrow">Cara kerja</span><h2>Tiga langkah. Tidak perlu paham kripto.</h2><p>Kamu kirim dolar stabil, keluarga terima Rupiah. Sisanya diurus di balik layar oleh Stellar.</p></div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h3>Sambungkan dompet</h3><p>Buka Freighter, masukkan jumlah dan alamat penerima. Selesai dalam satu ketukan.</p></div>
+      <div class="step"><div class="num">2</div><h3>Dana dikunci aman</h3><p>Smart contract escrow Soroban mengunci USDC-mu sampai keluarga mengklaimnya. Tidak sampai? Uang balik otomatis.</p></div>
+      <div class="step"><div class="num">3</div><h3>Keluarga terima Rupiah</h3><p>Otomatis dikonversi ke IDRT lewat Stellar DEX, siap dicairkan ke rekening lokal.</p></div>
+    </div>
+  </section>
+  <section class="block wrap" id="l-hemat">
+    <div class="compare">
+      <div><span class="eyebrow" style="color: var(--lime)">Bandingkan</span><h2>$600 juta setahun hilang ke perantara.</h2><p class="lead">Kirim Rp 3,2 juta lewat cara lama, keluargamu kehilangan hampir Rp 200 ribu. Lewat KirimStellar, hampir semuanya sampai.</p></div>
+      <div>
+        <div class="crow"><span class="label">Biaya transfer</span><span class="old">Rp 195.000</span><span class="new">Rp 300</span></div>
+        <div class="crow"><span class="label">Waktu sampai</span><span class="old">2-3 hari</span><span class="new">~5 detik</span></div>
+        <div class="crow"><span class="label">Kurs</span><span class="old">+3% markup</span><span class="new">mid-market</span></div>
+        <div class="crow"><span class="label">Perlu agen</span><span class="old">Ya</span><span class="new">Tidak</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="block wrap" id="l-fitur">
+    <div class="section-head"><span class="eyebrow">Kenapa Stellar</span><h2>Dibangun untuk uang yang benar-benar bergerak.</h2></div>
+    <div class="features">
+      <div class="feat wide"><div class="fico"><i data-lucide="lock" width="20" height="20"></i></div><h3>Escrow yang menjaga uangmu</h3><p>Setiap kiriman dikunci di smart contract Soroban dengan timelock. Diklaim dalam 7 hari, atau kembali ke kamu. Tidak ada yang bisa menyentuhnya di tengah jalan.</p></div>
+      <div class="feat"><div class="fico"><i data-lucide="banknote" width="20" height="20"></i></div><h3>Rupiah asli</h3><p>IDRT dijamin 1:1 dengan Rupiah, siap dicairkan lewat anchor lokal.</p></div>
+      <div class="feat"><div class="fico"><i data-lucide="smartphone" width="20" height="20"></i></div><h3>Mobile-first</h3><p>Dirancang untuk ponsel, karena di situlah keluargamu berada.</p></div>
+      <div class="feat"><div class="fico"><i data-lucide="eye" width="20" height="20"></i></div><h3>Transparan penuh</h3><p>Lacak tiap transaksi real-time lewat Horizon, cek sendiri di explorer.</p></div>
+      <div class="feat"><div class="fico"><i data-lucide="globe" width="20" height="20"></i></div><h3>Lintas negara</h3><p>Dari Malaysia, Hong Kong, Singapura, Taiwan, langsung ke rumah.</p></div>
+    </div>
+  </section>
+  <section class="cta-band wrap">
+    <h2>Kirim yang pertama malam ini.</h2>
+    <p>Gratis dibuka. Uang pertamamu bisa sampai sebelum kopi kamu dingin.</p>
+    <div class="hero-actions"><button class="nbtn nbtn-lime nbtn-lg" onclick="show('v-register')">Mulai kirim <i data-lucide="arrow-right" width="18" height="18"></i></button></div>
+  </section>
+  <footer>
+    <div class="wrap foot-inner">
+      <div class="brand"><span class="mark"><i data-lucide="send-horizontal" width="17" height="17"></i></span> KirimStellar</div>
+      <ul class="foot-links"><li><a onclick="scrollToId('l-cara')">Cara kerja</a></li><li><a onclick="scrollToId('l-hemat')">Biaya</a></li><li><a onclick="scrollToId('l-fitur')">Fitur</a></li><li><a href="https://github.com/0xshalah/KirimStellar" target="_blank">GitHub</a></li></ul>
+      <p class="fnote">Dibangun di Stellar · APAC Stellar Hackathon 2026</p>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================= LOGIN ============================================================= -->
+<div class="view" id="v-login">
+  <div class="auth-layout">
+    <aside class="auth-panel">
+      <div class="brand"><span class="mark"><i data-lucide="send-horizontal" width="17" height="17"></i></span> KirimStellar</div>
+      <div class="panel-body">
+        <h2>Uang untuk keluarga, <span class="hl">tiba dalam detik.</span></h2>
+        <div class="panel-quote">
+          <p>"Dulu tiap kirim ke ibu, kena potong hampir 200 ribu dan nunggu dua hari. Sekarang sampai sebelum aku sempat telepon."</p>
+          <div class="who"><span class="a">SW</span><div><div class="n">Siti W.</div><div class="r">Pekerja rumah tangga, Hong Kong</div></div></div>
+        </div>
+      </div>
+    </aside>
+    <main class="form-side">
+      <div class="form-card">
+        <p class="top-link">Belum punya akun? <a onclick="show('v-register')">Daftar gratis</a></p>
+        <h1>Selamat datang kembali</h1>
+        <p class="sub">Masuk untuk kirim uang ke rumah.</p>
+        <form class="authform" onsubmit="event.preventDefault(); enterApp('onboarding');">
+          <div class="field"><label>Email</label><div class="input-wrap"><i data-lucide="mail" width="17" height="17"></i><input type="email" placeholder="kamu@email.com" value="fahmi@dunkos.xyz"></div></div>
+          <div class="field"><label>Kata sandi</label><div class="input-wrap"><i data-lucide="lock" width="17" height="17"></i><input type="password" id="loginPw" placeholder="Masukkan kata sandi" value="password"><button type="button" class="toggle" onclick="togglePw('loginPw', this)"><i data-lucide="eye" width="17" height="17"></i></button></div></div>
+          <div class="row-between"><label class="check"><input type="checkbox" checked> Ingat saya</label><span class="forgot">Lupa sandi?</span></div>
+          <button type="submit" class="btn btn-primary">Masuk <i data-lucide="arrow-right" width="17" height="17"></i></button>
+        </form>
+        <div class="divider">atau</div>
+        <button class="wallet-btn" onclick="enterApp('home')"><span class="wico">F</span> Lanjut dengan Freighter Wallet</button>
+        <p class="foot-note">Dengan masuk, kamu setuju dengan <a>Ketentuan</a> &amp; <a>Privasi</a>.</p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ============================================================= REGISTER ============================================================= -->
+<div class="view" id="v-register">
+  <div class="auth-layout">
+    <aside class="auth-panel reg">
+      <div class="brand"><span class="mark"><i data-lucide="send-horizontal" width="17" height="17"></i></span> KirimStellar</div>
+      <div class="panel-body">
+        <h2>Buka akun, kirim <span class="hl">yang pertama malam ini.</span></h2>
+        <ul class="benefits">
+          <li><span class="cico"><i data-lucide="zap" width="14" height="14"></i></span><span>Uang tiba <b>dalam ~5 detik</b>, bukan dua hari.</span></li>
+          <li><span class="cico"><i data-lucide="badge-percent" width="14" height="14"></i></span><span>Biaya <b>di bawah 0,1%</b>, keluarga terima hampir semuanya.</span></li>
+          <li><span class="cico"><i data-lucide="shield-check" width="14" height="14"></i></span><span>Dana dikunci di <b>escrow on-chain</b> sampai diklaim.</span></li>
+          <li><span class="cico"><i data-lucide="gift" width="14" height="14"></i></span><span>Gratis dibuka, <b>tanpa biaya bulanan</b>.</span></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="form-side">
+      <div class="form-card">
+        <p class="top-link">Sudah punya akun? <a onclick="show('v-login')">Masuk</a></p>
+        <h1>Daftar gratis</h1>
+        <p class="sub">Kurang dari satu menit untuk mulai kirim.</p>
+        <form class="authform" onsubmit="event.preventDefault(); enterApp('onboarding');">
+          <div class="field"><label>Nama lengkap</label><div class="input-wrap"><i data-lucide="user" width="17" height="17"></i><input type="text" placeholder="Fahmi Shanghai" value="Fahmi Shanghai"></div></div>
+          <div class="field"><label>Email</label><div class="input-wrap"><i data-lucide="mail" width="17" height="17"></i><input type="email" placeholder="kamu@email.com"></div></div>
+          <div class="field"><label>Kata sandi</label><div class="input-wrap"><i data-lucide="lock" width="17" height="17"></i><input type="password" id="regPw" placeholder="Minimal 8 karakter" oninput="checkStrength(this.value)"><button type="button" class="toggle" onclick="togglePw('regPw', this)"><i data-lucide="eye" width="17" height="17"></i></button></div>
+            <div class="strength"><div class="bars" id="regBars"><span></span><span></span><span></span><span></span></div><span class="txt" id="regStrengthTxt">Gunakan 8+ karakter dengan angka &amp; simbol</span></div>
+          </div>
+          <label class="check start"><input type="checkbox" checked><span>Saya setuju dengan <a>Ketentuan Layanan</a> dan <a>Kebijakan Privasi</a> KirimStellar.</span></label>
+          <button type="submit" class="btn btn-primary">Buat akun <i data-lucide="arrow-right" width="17" height="17"></i></button>
+        </form>
+        <div class="divider">atau</div>
+        <button class="wallet-btn" onclick="enterApp('onboarding')"><span class="wico">F</span> Daftar dengan Freighter Wallet</button>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ============================================================= APP (phone shell) ============================================================= -->
+<div class="view" id="v-app">
+  <div class="phone-stage">
+    <div class="phone">
+      <div class="statusbar"><span id="clock">1:32</span><span class="dots"><i data-lucide="signal" width="14" height="14"></i><i data-lucide="wifi" width="14" height="14"></i><i data-lucide="battery-full" width="16" height="16"></i></span></div>
+      <div class="screen">
+
+        <!-- ONBOARDING -->
+        <div class="app-view" id="a-onboarding">
+          <div class="onb">
+            <div class="onb-visual"><div class="onb-art" id="onbArt"><i data-lucide="send-horizontal" width="56" height="56"></i></div></div>
+            <div class="onb-body">
+              <h2 id="onbTitle">Kirim ke rumah, dalam detik</h2>
+              <p id="onbText">Uang sampai ke keluarga sebelum kamu sempat tutup aplikasi. Bukan dua hari lagi.</p>
+              <div class="dots-row"><span class="active" id="d0"></span><span id="d1"></span><span id="d2"></span></div>
+              <div class="onb-actions">
+                <button class="onb-skip" onclick="enterApp('home')">Lewati</button>
+                <button class="btn btn-primary" style="width:auto;" id="onbNext" onclick="onbAdvance()">Lanjut <i data-lucide="arrow-right" width="16" height="16"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HOME -->
+        <div class="app-view" id="a-home">
+          <div class="appbar"><div><div style="font-size:0.8125rem;color:var(--muted);font-weight:600;">Selamat malam,</div><div class="ttl">Fahmi</div></div><div class="avatar" onclick="nav('profile')">FS</div></div>
+          <div class="scrollarea"><div class="pad">
+            <div class="balance-hero"><div class="lbl">Saldo kamu</div><div class="amt">1,240.50<span class="cur">USDC</span></div><div class="sub">≈ Rp 20.196.000</div></div>
+            <div class="quick">
+              <button onclick="nav('send')"><span class="qi"><i data-lucide="arrow-up-right" width="18" height="18"></i></span><span class="qt">Kirim</span></button>
+              <button onclick="nav('topup')"><span class="qi alt"><i data-lucide="plus" width="18" height="18"></i></span><span class="qt">Isi saldo</span></button>
+            </div>
+            <div class="sec-head"><h3>Kiriman terakhir</h3><a onclick="nav('history')">Lihat semua</a></div>
+            <div>
+              <div class="tx-item" onclick="nav('track')"><div class="tavatar">SW</div><div class="tinfo"><div class="tn">Ibu Sri Wahyuni</div><div class="td">Baru saja</div></div><div class="tright"><div class="ta">-200 USDC</div><div class="ts pending">Menunggu klaim</div></div></div>
+              <div class="tx-item" onclick="nav('detail')"><div class="tavatar">AD</div><div class="tinfo"><div class="tn">Adik Dewi</div><div class="td">11 Jul</div></div><div class="tright"><div class="ta">-150 USDC</div><div class="ts done">Terklaim</div></div></div>
+              <div class="tx-item" onclick="nav('detail')"><div class="tavatar">SW</div><div class="tinfo"><div class="tn">Ibu Sri Wahyuni</div><div class="td">4 Jul</div></div><div class="tright"><div class="ta">-200 USDC</div><div class="ts done">Terklaim</div></div></div>
+              <div class="tx-item" onclick="nav('detail')"><div class="tavatar">BU</div><div class="tinfo"><div class="tn">Budi (kakak)</div><div class="td">28 Jun</div></div><div class="tright"><div class="ta">-100 USDC</div><div class="ts refund">Dikembalikan</div></div></div>
+            </div>
+          </div></div>
+          <div class="bottomnav">
+            <button class="active"><i data-lucide="home" width="20" height="20"></i>Beranda</button>
+            <button onclick="nav('history')"><i data-lucide="clock" width="20" height="20"></i>Riwayat</button>
+            <button class="btn fab" onclick="nav('send')"><i data-lucide="plus" width="22" height="22"></i></button>
+            <button onclick="nav('recipients')"><i data-lucide="users" width="20" height="20"></i>Penerima</button>
+            <button onclick="nav('profile')"><i data-lucide="user" width="20" height="20"></i>Akun</button>
+          </div>
+        </div>
+
+        <!-- SEND -->
+        <div class="app-view" id="a-send">
+          <div class="appbar"><div class="back" onclick="nav('home')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Kirim uang</div></div>
+          <div class="scrollarea"><div class="pad">
+            <div class="card">
+              <div class="leg" style="padding:var(--space-lg);"><div><div class="leg-label">Kamu kirim</div><input class="amount" id="sendAmt" value="200.00" inputmode="decimal" aria-label="Jumlah USDC"></div><span class="pill"><span class="flag usdc">$</span> USDC</span></div>
+              <div class="rail" style="padding:var(--space-md) var(--space-lg);"><div class="rail-row"><span class="ico"><i data-lucide="zap" width="12" height="12"></i></span> Biaya jaringan <span class="val free">$0.02</span></div><div class="rail-row"><span class="ico"><i data-lucide="repeat" width="12" height="12"></i></span> Kurs mid-market <span class="val">16.284</span></div></div>
+              <div class="leg" style="padding:var(--space-lg);"><div><div class="leg-label">Mereka terima</div><div class="amount"><span id="recvAmt">3.256.443</span> <span class="cur">IDR</span></div></div><span class="pill"><span class="flag idr"></span> IDR</span></div>
+            </div>
+            <div class="recipient-row" onclick="nav('recipients')"><div class="r-av">SW</div><div><div class="r-n">Ibu Sri Wahyuni</div><div class="r-s">LOBSTR · GDPK…VBVT</div></div><span class="r-chev"><i data-lucide="chevron-right" width="18" height="18"></i></span></div>
+          </div></div>
+          <div class="pad"><button class="btn btn-primary" onclick="nav('review')">Lanjut <i data-lucide="arrow-right" width="17" height="17"></i></button></div>
+        </div>
+
+        <!-- REVIEW -->
+        <div class="app-view" id="a-review">
+          <div class="appbar"><div class="back" onclick="nav('send')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Cek sebelum kirim</div></div>
+          <div class="scrollarea"><div class="pad">
+            <div class="review-amt"><div class="big">200.00 <span style="color:var(--muted);font-size:1.25rem;">USDC</span></div><div class="small">Ibu Sri Wahyuni menerima Rp 3.256.443</div></div>
+            <div class="card" style="padding:0 var(--space-lg);">
+              <div class="kv"><span class="k">Penerima</span><span class="v">Ibu Sri Wahyuni</span></div>
+              <div class="kv"><span class="k">Dompet</span><span class="v">GDPK…VBVT</span></div>
+              <div class="kv"><span class="k">Biaya jaringan</span><span class="v free">$0.02</span></div>
+              <div class="kv"><span class="k">Kurs</span><span class="v">1 USDC = 16.284 IDR</span></div>
+              <div class="kv"><span class="k">Timelock refund</span><span class="v">7 hari</span></div>
+              <div class="kv"><span class="k">Total dipotong</span><span class="v">200.02 USDC</span></div>
+            </div>
+            <div class="note-box"><i data-lucide="shield-check" width="16" height="16"></i><span>Dana dikunci di escrow Soroban. Kalau tidak diklaim dalam 7 hari, otomatis kembali ke kamu.</span></div>
+          </div></div>
+          <div class="pad"><button class="btn btn-primary" onclick="nav('sign')">Konfirmasi &amp; tanda tangan <i data-lucide="pen-line" width="16" height="16"></i></button></div>
+        </div>
+
+        <!-- SIGN -->
+        <div class="app-view" id="a-sign">
+          <div class="appbar"><div class="back" onclick="nav('review')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Freighter</div></div>
+          <div class="sign-sheet">
+            <div class="wlogo">F</div>
+            <h3>Freighter minta tanda tangan</h3>
+            <p>Konfirmasi transaksi lock 200 USDC ke kontrak escrow KirimStellar.</p>
+            <div class="card" style="padding:var(--space-md) var(--space-lg);margin-top:var(--space-xl);text-align:left;"><div class="kv"><span class="k">Fungsi</span><span class="v">create_intent</span></div><div class="kv"><span class="k">Lock</span><span class="v">200 USDC</span></div><div class="kv"><span class="k">Jaringan</span><span class="v">Testnet</span></div></div>
+            <div style="display:flex;gap:var(--space-md);margin-top:var(--space-xl);">
+              <button class="btn btn-ghost" onclick="nav('review')">Tolak</button>
+              <button class="btn btn-dark" id="approveBtn" onclick="approveSign()">Setujui</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="app-view" id="a-success">
+          <div class="success-wrap">
+            <div class="success-badge"><i data-lucide="check" width="44" height="44"></i></div>
+            <h2>Terkirim!</h2>
+            <div class="big-amt">200 USDC → Rp 3.256.443</div>
+            <div class="receipt">
+              <div class="kv"><span class="k">Ke</span><span class="v">Ibu Sri Wahyuni</span></div>
+              <div class="kv"><span class="k">Status</span><span class="v"><span class="chip pending"><i data-lucide="clock" width="11" height="11"></i> Menunggu klaim</span></span></div>
+              <div class="kv"><span class="k">Waktu</span><span class="v">~5 detik</span></div>
+              <div class="kv"><span class="k">Hemat vs bank</span><span class="v free">Rp 187.000</span></div>
+            </div>
+          </div>
+          <div class="pad">
+            <button class="btn btn-primary" onclick="nav('track')" style="margin-bottom:var(--space-md);">Lacak status <i data-lucide="arrow-right" width="16" height="16"></i></button>
+            <button class="btn btn-ghost" onclick="nav('home')"><i data-lucide="share-2" width="15" height="15"></i> Bagikan bukti</button>
+          </div>
+        </div>
+
+        <!-- TRACKING -->
+        <div class="app-view" id="a-track">
+          <div class="appbar"><div class="back" onclick="nav('home')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Status kiriman</div></div>
+          <div class="scrollarea"><div class="pad">
+            <div class="track-hero"><span class="chip pending"><i data-lucide="clock" width="11" height="11"></i> Menunggu klaim</span><div class="amt" style="margin-top:var(--space-md);">200 USDC</div><div class="to">ke Ibu Sri Wahyuni · Rp 3.256.443</div></div>
+            <div class="timeline">
+              <div class="tl-step done"><div class="node"><i data-lucide="check" width="16" height="16"></i></div><div class="st-t">Dana dikunci di escrow</div><div class="st-d">1:33 · create_intent berhasil</div><span class="st-hash">7a3f…c91e <i data-lucide="external-link" width="11" height="11"></i></span></div>
+              <div class="tl-step done"><div class="node"><i data-lucide="check" width="16" height="16"></i></div><div class="st-t">Dikonfirmasi di ledger</div><div class="st-d">1:33 · ledger #58.204.117</div></div>
+              <div class="tl-step active"><div class="node"><span class="pulse"></span><i data-lucide="hourglass" width="15" height="15"></i></div><div class="st-t">Menunggu penerima klaim</div><div class="st-d">Link klaim terkirim ke Ibu Sri</div></div>
+              <div class="tl-step pending-step"><div class="node"><i data-lucide="banknote" width="15" height="15"></i></div><div class="st-t">Konversi ke IDRT &amp; terima</div><div class="st-d">Otomatis saat diklaim</div></div>
+            </div>
+            <div class="explorer-link"><i data-lucide="external-link" width="15" height="15"></i> Lihat di stellar.expert</div>
+            <div style="margin-top:var(--space-lg);"><button class="btn btn-dark" onclick="nav('claim')"><i data-lucide="smartphone" width="15" height="15"></i> Lihat dari sisi penerima</button></div>
+          </div></div>
+        </div>
+
+        <!-- CLAIM (receiver) -->
+        <div class="app-view" id="a-claim">
+          <div class="claim-top">
+            <div class="from-av">FS</div>
+            <div class="from-n">Fahmi mengirim untukmu</div>
+            <div class="claim-amt">Rp 3.256.443</div>
+            <div class="claim-cur">≈ 200 IDRT</div>
+          </div>
+          <div class="scrollarea"><div class="pad" style="padding-top:var(--space-xl);">
+            <div class="claim-info"><i data-lucide="shield-check" width="16" height="16"></i><span>Dana ini terkunci aman di Stellar. Klaim untuk terima langsung ke dompetmu.</span></div>
+            <div class="card" style="padding:0 var(--space-lg);"><div class="kv"><span class="k">Dari</span><span class="v">Fahmi Shanghai</span></div><div class="kv"><span class="k">Kamu terima</span><span class="v">200 IDRT</span></div><div class="kv"><span class="k">Biaya klaim</span><span class="v free">Gratis</span></div><div class="kv"><span class="k">Kedaluwarsa</span><span class="v">6 hari 23 jam</span></div></div>
+          </div></div>
+          <div class="pad"><button class="btn btn-primary" id="claimBtn" onclick="doClaim()">Klaim sekarang <i data-lucide="hand-coins" width="17" height="17"></i></button></div>
+        </div>
+
+        <!-- CLAIM DONE -->
+        <div class="app-view" id="a-claim-done">
+          <div class="success-wrap">
+            <div class="success-badge"><i data-lucide="party-popper" width="42" height="42"></i></div>
+            <h2>Uang sudah masuk!</h2>
+            <div class="big-amt">Rp 3.256.443 di dompetmu</div>
+            <div class="receipt"><div class="kv"><span class="k">Diterima</span><span class="v">200 IDRT</span></div><div class="kv"><span class="k">Dari</span><span class="v">Fahmi Shanghai</span></div><div class="kv"><span class="k">Status</span><span class="v"><span class="chip done"><i data-lucide="check" width="11" height="11"></i> Selesai</span></span></div></div>
+          </div>
+          <div class="pad"><button class="btn btn-primary" onclick="nav('home')"><i data-lucide="landmark" width="16" height="16"></i> Cairkan ke rekening</button></div>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="app-view" id="a-history">
+          <div class="appbar"><div class="back" onclick="nav('home')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Riwayat</div></div>
+          <div class="filter-row"><button class="fchip active">Semua</button><button class="fchip">Menunggu</button><button class="fchip">Terklaim</button><button class="fchip">Dikembalikan</button></div>
+          <div class="scrollarea"><div class="pad">
+            <div class="date-label">Hari ini</div>
+            <div class="tx-item" onclick="nav('track')"><div class="tavatar">SW</div><div class="tinfo"><div class="tn">Ibu Sri Wahyuni</div><div class="td">1:33</div></div><div class="tright"><div class="ta">-200 USDC</div><div class="ts pending">Menunggu</div></div></div>
+            <div class="date-label">Minggu ini</div>
+            <div class="tx-item" onclick="nav('detail')"><div class="tavatar">AD</div><div class="tinfo"><div class="tn">Adik Dewi</div><div class="td">11 Jul</div></div><div class="tright"><div class="ta">-150 USDC</div><div class="ts done">Terklaim</div></div></div>
+            <div class="tx-item" onclick="nav('detail')"><div class="tavatar">SW</div><div class="tinfo"><div class="tn">Ibu Sri Wahyuni</div><div class="td">4 Jul</div></div><div class="tright"><div class="ta">-200 USDC</div><div class="ts done">Terklaim</div></div></div>
+            <div class="date-label">Juni</div>
+            <div class="tx-item" onclick="nav('detail')"><div class="tavatar">BU</div><div class="tinfo"><div class="tn">Budi (kakak)</div><div class="td">28 Jun</div></div><div class="tright"><div class="ta">-100 USDC</div><div class="ts refund">Dikembalikan</div></div></div>
+            <div class="tx-item" onclick="nav('detail')"><div class="tavatar">AD</div><div class="tinfo"><div class="tn">Adik Dewi</div><div class="td">20 Jun</div></div><div class="tright"><div class="ta">-175 USDC</div><div class="ts done">Terklaim</div></div></div>
+          </div></div>
+        </div>
+
+        <!-- RECIPIENTS -->
+        <div class="app-view" id="a-recipients">
+          <div class="appbar"><div class="back" onclick="nav('home')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Penerima</div></div>
+          <div class="scrollarea"><div class="pad">
+            <button class="add-rec"><i data-lucide="user-plus" width="17" height="17"></i> Tambah penerima baru</button>
+            <div style="margin-top:var(--space-lg);">
+              <div class="rec-item" onclick="nav('send')"><div class="rav">SW</div><div><div class="r-n" style="font-weight:700;">Ibu Sri Wahyuni</div><div class="r-s" style="font-size:0.8125rem;color:var(--muted);">LOBSTR · GDPK…VBVT</div></div><span class="redit"><i data-lucide="pencil" width="16" height="16"></i></span></div>
+              <div class="rec-item" onclick="nav('send')"><div class="rav">AD</div><div><div class="r-n" style="font-weight:700;">Adik Dewi</div><div class="r-s" style="font-size:0.8125rem;color:var(--muted);">Freighter · GBXK…7ZQ2</div></div><span class="redit"><i data-lucide="pencil" width="16" height="16"></i></span></div>
+              <div class="rec-item" onclick="nav('send')"><div class="rav">BU</div><div><div class="r-n" style="font-weight:700;">Budi (kakak)</div><div class="r-s" style="font-size:0.8125rem;color:var(--muted);">LOBSTR · GCMM…37PH</div></div><span class="redit"><i data-lucide="pencil" width="16" height="16"></i></span></div>
+            </div>
+          </div></div>
+        </div>
+
+        <!-- DETAIL -->
+        <div class="app-view" id="a-detail">
+          <div class="appbar"><div class="back" onclick="nav('history')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Detail transaksi</div></div>
+          <div class="scrollarea"><div class="pad">
+            <div class="detail-hero"><div class="av">AD</div><div class="amt">-150 USDC</div><div class="sub">ke Adik Dewi · Rp 2.442.632</div><div style="margin-top:var(--space-md);"><span class="chip done"><i data-lucide="check" width="11" height="11"></i> Terklaim</span></div></div>
+            <div class="section-title">Rincian</div>
+            <div class="card" style="padding:0 var(--space-lg);"><div class="kv"><span class="k">Jumlah kirim</span><span class="v">150.00 USDC</span></div><div class="kv"><span class="k">Diterima</span><span class="v">2.442.632 IDR</span></div><div class="kv"><span class="k">Kurs</span><span class="v">16.284 IDR</span></div><div class="kv"><span class="k">Biaya jaringan</span><span class="v free">$0.02</span></div></div>
+            <div class="section-title">On-chain</div>
+            <div class="card" style="padding:0 var(--space-lg);"><div class="kv"><span class="k">Lock (create_intent)</span><span class="v hash">7a3f…c91e <i data-lucide="external-link" width="12" height="12"></i></span></div><div class="kv"><span class="k">Klaim (execute_intent)</span><span class="v hash">e28b…14aa <i data-lucide="external-link" width="12" height="12"></i></span></div><div class="kv"><span class="k">Ledger</span><span class="v">#58.201.994</span></div><div class="kv"><span class="k">Contract</span><span class="v hash">CDLK…7XSU <i data-lucide="external-link" width="12" height="12"></i></span></div></div>
+            <div style="margin-top:var(--space-lg);"><button class="btn btn-ghost"><i data-lucide="external-link" width="15" height="15"></i> Buka di stellar.expert</button></div>
+          </div></div>
+        </div>
+
+        <!-- PROFILE -->
+        <div class="app-view" id="a-profile">
+          <div class="appbar"><div class="back" onclick="nav('home')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Akun</div></div>
+          <div class="scrollarea"><div class="pad">
+            <div class="profile-head"><div class="pav">FS</div><div class="pn">Fahmi Shanghai</div><div class="pe">fahmi@dunkos.xyz</div><span class="wallet-badge"><span class="flag usdc" style="width:16px;height:16px;">F</span> Freighter · GCMM…37PH</span></div>
+            <div class="section-title">Preferensi</div>
+            <div class="settings-group">
+              <div class="set-row"><span class="sico"><i data-lucide="globe" width="17" height="17"></i></span><div><div class="st">Bahasa</div></div><span class="chev" style="display:flex;align-items:center;gap:6px;color:var(--muted);font-weight:600;font-size:0.875rem;">Indonesia <i data-lucide="chevron-right" width="16" height="16"></i></span></div>
+              <div class="set-row" onclick="toggleSw(this)"><span class="sico"><i data-lucide="bell" width="17" height="17"></i></span><div><div class="st">Notifikasi</div><div class="sd">Kabari saat penerima klaim</div></div><div class="toggle-sw"></div></div>
+              <div class="set-row" onclick="toggleSw(this)"><span class="sico"><i data-lucide="fingerprint" width="17" height="17"></i></span><div><div class="st">Kunci biometrik</div><div class="sd">Sidik jari tiap kirim</div></div><div class="toggle-sw off"></div></div>
+            </div>
+            <div class="section-title">Keamanan &amp; dukungan</div>
+            <div class="settings-group"><div class="set-row"><span class="sico"><i data-lucide="shield" width="17" height="17"></i></span><div><div class="st">Keamanan dompet</div></div><span class="chev"><i data-lucide="chevron-right" width="16" height="16"></i></span></div><div class="set-row"><span class="sico"><i data-lucide="life-buoy" width="17" height="17"></i></span><div><div class="st">Bantuan</div></div><span class="chev"><i data-lucide="chevron-right" width="16" height="16"></i></span></div></div>
+            <div class="settings-group"><div class="set-row" onclick="show('v-landing')"><span class="sico danger"><i data-lucide="log-out" width="17" height="17"></i></span><div><div class="st danger">Keluar</div></div></div></div>
+          </div></div>
+        </div>
+
+        <!-- TOPUP -->
+        <div class="app-view" id="a-topup">
+          <div class="appbar"><div class="back" onclick="nav('home')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Isi saldo</div></div>
+          <div class="scrollarea"><div class="pad">
+            <div class="card"><div class="amount-in"><div><div class="leg-label">Jumlah isi</div><input id="topupAmt" value="500.000" inputmode="numeric" aria-label="Jumlah isi saldo"></div><span class="pill"><span class="flag idr"></span> IDR</span></div><div style="border-top:1px solid var(--line);padding:var(--space-md) var(--space-lg);font-size:0.8125rem;font-weight:600;color:var(--forest-soft);display:flex;align-items:center;gap:var(--space-md);">Kamu dapat <span style="margin-left:auto;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;" id="topupGet">≈ 30.70 USDC</span></div></div>
+            <div class="quick-amts"><button onclick="setTopup('200.000')">200rb</button><button onclick="setTopup('500.000')">500rb</button><button onclick="setTopup('1.000.000')">1jt</button></div>
+            <div class="section-title">Metode</div>
+            <div class="method sel" onclick="selMethod(this)"><span class="mico" style="background:var(--info);">VA</span><div><div class="mn">Virtual Account (anchor IDR)</div><div class="md">BCA, Mandiri, BNI · instan</div></div><span class="mradio"></span></div>
+            <div class="method" onclick="selMethod(this)"><span class="mico" style="background:var(--forest);">QR</span><div><div class="mn">QRIS</div><div class="md">Scan bayar · instan</div></div><span class="mradio"></span></div>
+            <div class="method" onclick="selMethod(this)"><span class="mico" style="background:oklch(60% 0.16 300);">EW</span><div><div class="mn">E-wallet</div><div class="md">GoPay, OVO, DANA</div></div><span class="mradio"></span></div>
+          </div></div>
+          <div class="pad"><button class="btn btn-primary" onclick="nav('home')">Lanjut bayar <i data-lucide="arrow-right" width="16" height="16"></i></button></div>
+        </div>
+
+        <!-- STATE: wallet not connected -->
+        <div class="app-view" id="a-empty-wallet">
+          <div class="appbar"><div class="back" onclick="nav('home')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Beranda</div></div>
+          <div class="state-wrap"><div class="state-ico neutral"><i data-lucide="wallet" width="32" height="32"></i></div><h3>Sambungkan dompet dulu</h3><p>Hubungkan Freighter untuk mulai kirim uang ke keluarga di rumah.</p><button class="btn btn-primary" style="width:auto;margin-top:var(--space-xl);" onclick="nav('home')"><span style="display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;background:var(--info);color:#fff;font-weight:800;font-size:0.75rem;">F</span> Sambungkan Freighter</button></div>
+        </div>
+
+        <!-- STATE: insufficient balance -->
+        <div class="app-view" id="a-err-balance">
+          <div class="appbar"><div class="back" onclick="nav('send')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Kirim uang</div></div>
+          <div class="state-wrap"><div class="state-ico warn"><i data-lucide="wallet-minimal" width="32" height="32"></i></div><h3>Saldo tidak cukup</h3><p>Kamu mau kirim 200 USDC tapi saldo cuma 45,50 USDC. Isi saldo dulu ya.</p><button class="btn btn-primary" style="width:auto;margin-top:var(--space-xl);" onclick="nav('topup')"><i data-lucide="plus" width="16" height="16"></i> Isi saldo</button></div>
+        </div>
+
+        <!-- STATE: tx failed -->
+        <div class="app-view" id="a-err-tx">
+          <div class="appbar"><div class="back" onclick="nav('review')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Kirim uang</div></div>
+          <div class="state-wrap"><div class="state-ico danger"><i data-lucide="x" width="34" height="34"></i></div><h3>Transaksi gagal</h3><p>Jaringan menolak transaksi. Dana kamu aman, tidak ada yang terpotong. Coba lagi.</p><div style="display:flex;gap:var(--space-md);margin-top:var(--space-xl);"><button class="btn btn-ghost" style="width:auto;" onclick="nav('home')">Batal</button><button class="btn btn-primary" style="width:auto;" onclick="nav('review')"><i data-lucide="rotate-cw" width="15" height="15"></i> Coba lagi</button></div></div>
+        </div>
+
+        <!-- STATE: loading -->
+        <div class="app-view" id="a-loading">
+          <div class="appbar"><div class="ttl">Beranda</div></div>
+          <div class="pad">
+            <div class="sk" style="height:120px;border-radius:var(--r-lg);"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);margin-top:var(--space-lg);"><div class="sk" style="height:78px;"></div><div class="sk" style="height:78px;"></div></div>
+            <div class="sk" style="height:16px;width:40%;margin-top:var(--space-xl);"></div>
+            <div class="sk-row"><div class="sk sk-circle"></div><div style="flex:1;"><div class="sk" style="height:12px;width:60%;margin-bottom:6px;"></div><div class="sk" style="height:10px;width:35%;"></div></div></div>
+            <div class="sk-row"><div class="sk sk-circle"></div><div style="flex:1;"><div class="sk" style="height:12px;width:55%;margin-bottom:6px;"></div><div class="sk" style="height:10px;width:30%;"></div></div></div>
+            <div class="sk-row"><div class="sk sk-circle"></div><div style="flex:1;"><div class="sk" style="height:12px;width:65%;margin-bottom:6px;"></div><div class="sk" style="height:10px;width:40%;"></div></div></div>
+          </div>
+        </div>
+
+        <!-- STATE: empty tx -->
+        <div class="app-view" id="a-empty-tx">
+          <div class="appbar"><div class="back" onclick="nav('home')"><i data-lucide="arrow-left" width="18" height="18"></i></div><div class="ttl">Riwayat</div></div>
+          <div class="state-wrap"><div class="state-ico neutral"><i data-lucide="send-horizontal" width="30" height="30"></i></div><h3>Belum ada kiriman</h3><p>Begitu kamu kirim yang pertama, semua riwayatnya muncul di sini.</p><button class="btn btn-primary" style="width:auto;margin-top:var(--space-xl);" onclick="nav('send')">Kirim pertama <i data-lucide="arrow-right" width="16" height="16"></i></button></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================= FLOW GUIDE ============================================================= -->
+<div class="guide" id="guide">
+  <span class="g-label"><i data-lucide="clapperboard" width="14" height="14"></i> Alur demo</span>
+  <div class="g-steps" id="gSteps"></div>
+  <button class="g-close" onclick="document.getElementById('guide').classList.add('hidden')">tutup</button>
+</div>
+
+<script>
+  const RATE = 16284.21;
+  const idr = n => new Intl.NumberFormat('id-ID',{maximumFractionDigits:0}).format(n);
+
+  // ---------- top-level view router ----------
+  function show(viewId){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById(viewId).classList.add('active');
+    window.scrollTo(0,0);
+    updateGuide(viewId);
+    if (window.lucide) lucide.createIcons();
+  }
+
+  // ---------- in-app screen router ----------
+  let currentApp = 'home';
+  function nav(screen){
+    document.querySelectorAll('#v-app .app-view').forEach(v=>v.classList.remove('active'));
+    const el = document.getElementById('a-'+screen);
+    if(el){ el.classList.add('active'); currentApp = screen; }
+    // scroll the screen area to top
+    document.querySelectorAll('#v-app .scrollarea').forEach(s=>s.scrollTop=0);
+    updateGuide('v-app', screen);
+    if (window.lucide) lucide.createIcons();
+  }
+  function enterApp(screen){ show('v-app'); nav(screen); }
+
+  // ---------- landing calculator ----------
+  const lSend = document.getElementById('lSend'), lRecv = document.getElementById('lRecv');
+  function lRecompute(){ const u=parseFloat(lSend.value.replace(/,/g,''))||0; lRecv.textContent=idr(u*RATE); }
+  lSend.addEventListener('input', lRecompute);
+  lSend.addEventListener('blur', ()=>{ const u=parseFloat(lSend.value.replace(/,/g,''))||0; lSend.value=u.toFixed(2); });
+
+  // ---------- send calculator ----------
+  const sendAmt = document.getElementById('sendAmt'), recvAmt = document.getElementById('recvAmt');
+  function sRecompute(){ const u=parseFloat(sendAmt.value.replace(/,/g,''))||0; recvAmt.textContent=idr(u*RATE); }
+  sendAmt.addEventListener('input', sRecompute);
+  sendAmt.addEventListener('blur', ()=>{ const u=parseFloat(sendAmt.value.replace(/,/g,''))||0; sendAmt.value=u.toFixed(2); });
+
+  // ---------- password toggles ----------
+  function togglePw(id, btn){
+    const el = document.getElementById(id);
+    const show = el.type === 'password';
+    el.type = show ? 'text' : 'password';
+    btn.innerHTML = show ? '<i data-lucide="eye-off" width="17" height="17"></i>' : '<i data-lucide="eye" width="17" height="17"></i>';
+    if (window.lucide) lucide.createIcons();
+  }
+  // ---------- strength meter ----------
+  const labels = ['', 'Lemah', 'Lumayan', 'Bagus', 'Kuat'];
+  function checkStrength(v){
+    let s=0;
+    if(v.length>=8) s++;
+    if(/[A-Z]/.test(v)&&/[a-z]/.test(v)) s++;
+    if(/\d/.test(v)) s++;
+    if(/[^A-Za-z0-9]/.test(v)) s++;
+    if(v.length===0) s=0;
+    document.getElementById('regBars').className = 'bars' + (s?' s'+s:'');
+    document.getElementById('regStrengthTxt').textContent = v.length===0 ? 'Gunakan 8+ karakter dengan angka & simbol' : 'Kekuatan sandi: '+labels[s];
+  }
+
+  // ---------- sign / claim animations ----------
+  function approveSign(){
+    const b=document.getElementById('approveBtn');
+    b.innerHTML='<span class="spinner"></span> Menandatangani…'; b.disabled=true;
+    setTimeout(()=>{ b.innerHTML='Setujui'; b.disabled=false; nav('success'); }, 1400);
+  }
+  function doClaim(){
+    const b=document.getElementById('claimBtn');
+    b.innerHTML='<span class="spinner"></span> Mengklaim…'; b.disabled=true;
+    setTimeout(()=>{ b.innerHTML='Klaim sekarang'; b.disabled=false; nav('claim-done'); }, 1400);
+  }
+
+  // ---------- toggles ----------
+  function toggleSw(row){ const sw=row.querySelector('.toggle-sw'); if(sw) sw.classList.toggle('off'); }
+  function selMethod(el){ document.querySelectorAll('#a-topup .method').forEach(m=>m.classList.remove('sel')); el.classList.add('sel'); }
+
+  // ---------- topup ----------
+  const topupAmt=document.getElementById('topupAmt'), topupGet=document.getElementById('topupGet');
+  function recompTop(){ const n=parseFloat(topupAmt.value.replace(/\./g,'').replace(/,/g,''))||0; topupGet.textContent='≈ '+(n/RATE).toFixed(2)+' USDC'; }
+  function setTopup(v){ topupAmt.value=v; recompTop(); }
+  topupAmt.addEventListener('input', recompTop);
+
+  // ---------- onboarding ----------
+  const slides=[
+    {icon:'send-horizontal',title:'Kirim ke rumah, dalam detik',text:'Uang sampai ke keluarga sebelum kamu sempat tutup aplikasi. Bukan dua hari lagi.'},
+    {icon:'badge-percent',title:'Biaya nyaris nol',text:'Bayar di bawah 0,1%, bukan 5-7%. Hampir semua uangmu sampai ke keluarga.'},
+    {icon:'shield-check',title:'Aman di escrow on-chain',text:'Dana dikunci di smart contract sampai diklaim. Tidak diklaim? Balik ke kamu otomatis.'},
+  ];
+  let oi=0;
+  function renderOnb(){
+    const s=slides[oi];
+    document.getElementById('onbArt').innerHTML='<i data-lucide="'+s.icon+'" width="56" height="56"></i>';
+    document.getElementById('onbTitle').textContent=s.title;
+    document.getElementById('onbText').textContent=s.text;
+    [0,1,2].forEach(i=>document.getElementById('d'+i).classList.toggle('active', i===oi));
+    document.getElementById('onbNext').innerHTML = oi===slides.length-1 ? 'Mulai <i data-lucide="arrow-right" width="16" height="16"></i>' : 'Lanjut <i data-lucide="arrow-right" width="16" height="16"></i>';
+    if (window.lucide) lucide.createIcons();
+  }
+  function onbAdvance(){ if(oi<slides.length-1){ oi++; renderOnb(); } else { enterApp('home'); } }
+
+  // ---------- demo flow guide ----------
+  const flow = [
+    {label:'Landing', view:'v-landing'},
+    {label:'Daftar', view:'v-register'},
+    {label:'Onboarding', view:'v-app', screen:'onboarding'},
+    {label:'Home', view:'v-app', screen:'home'},
+    {label:'Kirim', view:'v-app', screen:'send'},
+    {label:'Review', view:'v-app', screen:'review'},
+    {label:'Tanda tangan', view:'v-app', screen:'sign'},
+    {label:'Sukses', view:'v-app', screen:'success'},
+    {label:'Tracking', view:'v-app', screen:'track'},
+    {label:'Klaim (penerima)', view:'v-app', screen:'claim'},
+    {label:'Uang masuk', view:'v-app', screen:'claim-done'},
+  ];
+  function buildGuide(){
+    const c=document.getElementById('gSteps');
+    c.innerHTML = flow.map((f,i)=>`<span class="g-step" data-i="${i}" onclick="jumpFlow(${i})">${i+1}. ${f.label}</span>`).join('');
+  }
+  function jumpFlow(i){
+    const f=flow[i];
+    if(f.view==='v-app'){ if(oi!==0 && f.screen==='onboarding'){ oi=0; renderOnb(); } enterApp(f.screen); }
+    else show(f.view);
+  }
+  function updateGuide(viewId, screen){
+    document.querySelectorAll('.g-step').forEach(s=>s.classList.remove('cur'));
+    let idx = -1;
+    flow.forEach((f,i)=>{ if(f.view===viewId && (f.view!=='v-app' || f.screen===(screen||currentApp))) idx=i; });
+    if(idx>=0){ const el=document.querySelector('.g-step[data-i="'+idx+'"]'); if(el){ el.classList.add('cur'); el.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); } }
+  }
+
+  // ---------- clock ----------
+  function tick(){ const d=new Date(); document.getElementById('clock').textContent = d.getHours()+':'+String(d.getMinutes()).padStart(2,'0'); }
+
+  // init
+  lRecompute(); sRecompute(); recompTop(); renderOnb(); buildGuide(); tick(); setInterval(tick, 30000);
+  updateGuide('v-landing');
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
