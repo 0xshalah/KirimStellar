@@ -20,7 +20,7 @@
   --info: oklch(62% 0.16 250);
 
   --space-xs: 4px; --space-sm: 8px; --space-md: 12px; --space-lg: 16px;
-  --space-xl: 24px; --space-2xl: 32px; --space-3xl: 48px;
+  --space-xl: 24px; --space-2xl: 32px; --space-3xl: 48px; --space-4xl: 72px; --space-5xl: 112px;
 
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
