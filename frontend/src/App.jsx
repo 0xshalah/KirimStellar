@@ -41,9 +41,21 @@ const PUBLIC = {
 export default function App() {
   const { address, route, authView, onboarded } = useApp();
 
-  // Unauthenticated: full demo — show ALL screens via DemoBar, not just public.
+  // Unauthenticated: show ALL screens inside phone frame via DemoBar.
   if (!address) {
     const View = SCREENS[authView] || PUBLIC[authView] || Landing;
+    if (SCREENS[authView]) {
+      // App screen — render inside phone shell
+      return (
+        <div className="app-shell">
+          <div className="app">
+            <div className="app-body"><View /></div>
+          </div>
+          <DemoBar />
+        </div>
+      );
+    }
+    // Public page (landing/login/register) — full-width marketing
     return (
       <>
         <View />
