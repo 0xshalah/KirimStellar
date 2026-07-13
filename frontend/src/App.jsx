@@ -41,9 +41,9 @@ const PUBLIC = {
 export default function App() {
   const { address, route, authView, onboarded } = useApp();
 
-  // Unauthenticated: full-page marketing / auth flow.
+  // Unauthenticated: full demo — show ALL screens via DemoBar, not just public.
   if (!address) {
-    const View = PUBLIC[authView] || Landing;
+    const View = SCREENS[authView] || PUBLIC[authView] || Landing;
     return (
       <>
         <View />

@@ -3,14 +3,11 @@ import { Clapperboard, X, ChevronUp } from "lucide-react";
 import { useApp } from "../state/store.jsx";
 import { sendAssetCode } from "../lib/stellar.js";
 
-const PUBLIC_STEPS = [
+// Show ALL steps to everyone — no wallet requirement for demo browsing.
+const STEPS = [
   ["landing", "Landing"],
   ["login", "Login"],
   ["register", "Register"],
-];
-
-// 'sending' is intentionally excluded — it triggers a live on-chain signature.
-const APP_STEPS = [
   ["home", "Beranda"],
   ["send", "Kirim"],
   ["review", "Review"],
@@ -33,10 +30,7 @@ export default function DemoBar() {
   } = app;
 
   const [open, setOpen] = useState(true);
-
-  const connected = !!address;
-  const steps = connected ? APP_STEPS : PUBLIC_STEPS;
-  const current = connected ? route : authView;
+  const current = !!address ? route : authView;
 
   function demoRecipient() {
     return recipients[0] || { name: "Ibu Sri Wahyuni", wallet: "GCMMUF2BORBERTSQFN4XE5UMILIGXEYSHT5C3BTHUZQCNCLCN5JC37PH", walletLabel: "Freighter" };
@@ -75,8 +69,10 @@ export default function DemoBar() {
   }
 
   function jump(target) {
-    if (connected) {
+    if (["review", "success", "track", "claim", "detail"].includes(target)) {
       seed(target);
+    }
+    if (!!address) {
       goTab(target);
     } else {
       setAuthView(target);
@@ -95,7 +91,7 @@ export default function DemoBar() {
     <div className="demobar">
       <span className="db-label"><Clapperboard size={14} /> Demo</span>
       <div className="db-steps">
-        {steps.map(([key, label]) => (
+        {STEPS.map(([key, label]) => (
           <button
             key={key}
             className={`db-step${current === key ? " cur" : ""}`}
