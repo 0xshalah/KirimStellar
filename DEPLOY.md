@@ -1,48 +1,44 @@
 # Deploy KirimStellar Frontend ke EdgeOne Pages
 
-## Penyebab 404
+## Root Cause 404
 
-EdgeOne Pages gak tahu kalau KirimStellar adalah **Single Page Application (SPA)**.  
-Semua path (`/send`, `/claim`, `/history`) dirender oleh React di client side, bukan file HTML terpisah.  
-EdgeOne perlu diarahkan: **semua route → `index.html`**.
+Vite tidak meng-copy file underscore-prefixed (`_redirects`) dari `public/` ke `dist/`.  
+EdgeOne menerima `dist/` tanpa routing config → semua path selain `/` return 404.
 
-## Fix (sudah diterapkan)
+**Fix diterapkan (2 lapis):**
 
-File `frontend/public/_redirects` sudah dibuat dengan isi:
+### 1. `postbuild` script (package.json)
+Setelah `vite build`, script otomatis copy `_redirects` + buat `404.html`:
+```json
+"postbuild": "cp public/_redirects dist/_redirects && cp dist/index.html dist/404.html"
+```
 
+### 2. `_redirects` SPA fallback
 ```
 /*    /index.html    200
 ```
 
-Vite akan otomatis menyalin file ini ke `dist/` saat `npm run build`.
+## EdgeOne Build Configuration
 
-## Deploy ke EdgeOne
-
-### Konfigurasi di dashboard EdgeOne Pages:
-
-| Setting | Value |
+| Field | Isi |
 |---|---|
-| **Framework** | Vite |
-| **Build Command** | `cd frontend && npm install && npm run build` |
-| **Output Directory** | `frontend/dist` |
-| **Root Directory** | `./` (repo root) |
+| Preset framework | **Other** |
+| Root directory | `./` |
+| Build output directory | `frontend/dist` |
+| Install command | `npm install` |
+| Compile commands | `cd frontend && npm install && npm run build` |
 
-### Atau deploy dari folder frontend langsung:
+## Verifikasi pasca-deploy
 
-| Setting | Value |
-|---|---|
-| **Root Directory** | `frontend` |
-| **Build Command** | `npm install && npm run build` |
-| **Output Directory** | `dist` |
-
-## Verifikasi
-
-Setelah deploy, cek semua route:
+Setelah build sukses, cek:
 ```
-✅ https://[project].edgeone.app/           → landing
-✅ https://[project].edgeone.app/send        → send page
-✅ https://[project].edgeone.app/claim       → claim page
-✅ https://[project].edgeone.app/history     → history page
+✅ https://kirimstellar.edgeone.dev/           → index.html (landing)
+✅ https://kirimstellar.edgeone.dev/send        → SPA routing ke index.html
+✅ https://kirimstellar.edgeone.dev/claim       → SPA routing ke index.html
+✅ https://kirimstellar.edgeone.dev/404.html    → fallback page
 ```
 
-Kalau masih 404 setelah fix ini: cek di dashboard EdgeOne apakah build succeed. Cek log build untuk error.
+Kalau masih 404: cek **build log** di dashboard EdgeOne. Pastikan:
+1. `npm install` sukses (ada `node_modules/`)
+2. `vite build` sukses (ada `dist/index.html`)
+3. `postbuild` jalan (ada `dist/_redirects` dan `dist/404.html`)
